@@ -1,0 +1,49 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# IntelliJ IDEA files
+.idea/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Compiled Java bytecode
+*.class
+
+# Bytecode directory
+bin/
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Dependency directories
+lib/
+target/
+
+# Build directory
+build/
+
+# Temporary files
+*.tmp
+
+# User-specific files
+*.iml
+*.iws
+*.ipr
+
+# macOS files
+.DS_Store
+
+# Windows Thumbs.db file
+Thumbs.db
+
+# Gradle files
+.gradle/
+build/

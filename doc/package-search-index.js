@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"NewsManager","l":"application"},{"m":"NewsManager","l":"application.news"},{"m":"NewsManager","l":"application.utils"},{"m":"NewsManager","l":"application.utils.exceptions"},{"m":"NewsManager","l":"serverConection"},{"m":"NewsManager","l":"serverConection.exceptions"}];updateSearchResults();
