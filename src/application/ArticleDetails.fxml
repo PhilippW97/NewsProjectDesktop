@@ -1,17 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.web.WebView?>
 <AnchorPane prefHeight="410.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ArticleDetailsController">
    <children>
-      <Button layoutX="28.0" layoutY="349.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="448.0" layoutY="349.0" mnemonicParsing="false" text="Button" />
-      <Label layoutX="225.0" layoutY="34.0" text="Label" />
-      <Label layoutX="225.0" layoutY="61.0" text="Label" />
-      <Label layoutX="225.0" layoutY="89.0" text="Label" />
-      <Label layoutX="28.0" layoutY="14.0" text="Label" />
+      <HBox AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <ImageView fitHeight="68.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </ImageView>
+            <VBox>
+               <children>
+                  <Label text="Title:">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="subtitle" text="Subtitle:">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="category" text="Category:">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <WebView fx:id="webView" layoutX="20.0" layoutY="138.0" prefHeight="213.0" prefWidth="510.0" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="138.0" />
+      <JFXButton onAction="#onBack" styleClass="button-light-blue" layoutX="20.0" layoutY="358.0" text="Back" />
+      <JFXButton onAction="#onBody" styleClass="button-light-blue" layoutX="434.0" layoutY="358.0" text="Abstract/Body" />
+      <Label layoutX="20.0" layoutY="12.0" text="News online for User">
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </Label>
+      <Label fx:id="userIdLabel" layoutX="208.0" layoutY="15.0" prefHeight="17.0" prefWidth="67.0" AnchorPane.rightAnchor="275.0">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
