@@ -230,6 +230,7 @@ public class NewsReaderController {
 	            Article selectedArticle = articleList.getSelectionModel().getSelectedItem();
 	            if (selectedArticle != null) {
 	                controller.setArticle(selectedArticle);
+					System.out.println(selectedArticle.getBodyText());
 	            }
 			}
 			// Article Edit and Create are handled in the same controller
@@ -328,7 +329,7 @@ public class NewsReaderController {
 	}
 
 	void setConnectionManager (ConnectionManager connection){
-		this.newsReaderModel.setDummyData(false); //System is connected so dummy data are not needed
+		this.newsReaderModel.setDummyData(true); //System is connected so dummy data are not needed
 		this.newsReaderModel.setConnectionManager(connection);
 		this.getData();
 	}

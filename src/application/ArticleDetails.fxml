@@ -17,19 +17,19 @@
    <children>
       <HBox AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
          <children>
-            <ImageView fitHeight="68.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imageView" fitHeight="68.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
             </ImageView>
             <VBox>
                <children>
-                  <Label text="Title:">
+                  <Label fx:id="titleLabel" text="Title:">
                      <padding>
                         <Insets top="5.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="subtitle" text="Subtitle:">
+                  <Label fx:id="subtitleLabel" text="Subtitle:">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -37,7 +37,7 @@
                         <Insets top="5.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="category" text="Category:">
+                  <Label fx:id="categoryLabel" text="Category:">
                      <padding>
                         <Insets top="5.0" />
                      </padding>

@@ -66,19 +66,20 @@ public class ArticleDetailsController {
 		this.article = article;
 		//TODO complete this method
 		// Update UI with article information
-		titleLabel.setText(article.getTitle());
-		subtitleLabel.setText(article.getSubtitle());
-		categoryLabel.setText(article.getCategory());
+		this.titleLabel.setText(article.getTitle());
+		this.subtitleLabel.setText(article.getSubtitle());
+		this.categoryLabel.setText(article.getCategory());
 		// Load the HTML content into WebView
 		WebEngine webEngine = webView.getEngine();
-		webEngine.loadContent(article.getBodyText());
+		System.out.println("hier wird geloggt "+ this.article);
+		webEngine.loadContent(article.getBodyText(), "text/html");
 		// Similarly, update other UI components with article details as needed
 	}
 
 	@FXML
 	void onBack(ActionEvent event) {
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		stage.toBack();
+		stage.close();
 	}
 
 	@FXML
