@@ -6,6 +6,7 @@ package application;
 
 import application.news.Article;
 import application.news.User;
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -38,6 +39,10 @@ public class ArticleDetailsController {
 	private ImageView imageView;
 	@FXML
 	private WebView webView;
+	@FXML
+	private JFXButton backButton;
+	@FXML
+	private JFXButton toggleBodyButton;
 	private User usr;
 	private boolean isAbstractText = true;
 
@@ -104,5 +109,7 @@ public class ArticleDetailsController {
 		assert categoryLabel != null : "fx:id=\"categoryLabel\" was not injected: check your FXML file ''.";
 		assert imageView != null : "fx:id=\"imageView\" was not injected: check your FXML file ''.";
 		assert webView != null : "fx:id=\"webView\" was not injected: check your FXML file ''.";
+		backButton.setStyle("-fx-background-color: lightblue;");
+		toggleBodyButton.setStyle("-fx-background-color: lightblue;");
 	}
 }
