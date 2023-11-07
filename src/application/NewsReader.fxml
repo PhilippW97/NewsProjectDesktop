@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewsReaderController">
+<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewsReaderController">
+   <children>
+      <ListView fx:id="articleList" layoutX="20.0" layoutY="181.0" prefHeight="204.0" prefWidth="191.0" />
+      <ImageView fx:id="imageViewer" fitHeight="126.0" fitWidth="172.0" layoutX="319.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
+      <MenuButton fx:id="categoryMenu" layoutX="20.0" layoutY="105.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="All">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="Sports" />
+          <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="National" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="Economy" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="International" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="Technology" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="All" />
+        </items>
+      </MenuButton>
+      <JFXButton fx:id="articleDetailsButton" layoutX="405.0" layoutY="362.0" onAction="#viewArticle" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: blue;" text="Read More" />
+      <Label layoutX="20.0" layoutY="143.0" prefHeight="18.0" prefWidth="37.0" text="Filter:" />
+      <Label fx:id="articleSelectedLabel" layoutX="242.0" layoutY="172.0" prefHeight="18.0" prefWidth="236.0" text="MyArticle" />
+      <TextField fx:id="textFilter" layoutX="54.0" layoutY="139.0" onKeyTyped="#onNewChar" />
+      <WebView fx:id="abstractViewer" layoutX="233.0" layoutY="200.0" prefHeight="139.0" prefWidth="247.0" />
+      <JFXButton fx:id="articleEditButton" layoutX="338.0" layoutY="362.0" onAction="#editArticle" style="-fx-background-color: blue;" text="Edit" />
+      <JFXButton fx:id="articleDeleteButton" buttonType="RAISED" layoutX="242.0" layoutY="362.0" onAction="#deleteArticle" style="-fx-background-color: red;" text="Delete" />
+      <JFXButton fx:id="fileLoadButton" layoutX="20.0" layoutY="64.0" onAction="#loadArticleFromFile" style="-fx-background-color: blue;" text="Load Article from File" />
+      <JFXButton fx:id="articleNewButton" layoutX="177.0" layoutY="64.0" onAction="#newArticle" prefHeight="30.0" prefWidth="92.0" style="-fx-background-color: blue;" text="New Article" />
+      <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="20.0" layoutY="14.0" onAction="#handleLogin" style="-fx-background-color: blue;" text="Login" />
+   </children>
 </AnchorPane>
