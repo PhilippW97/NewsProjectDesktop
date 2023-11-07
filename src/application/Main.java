@@ -51,12 +51,12 @@ public class Main extends Application {
 			 * in the FXML file. Pane is the father of all container (BorderPane, 
 			 * FlowPane, AnchorPane ...
 			 */
-			/*Pane root = FXMLLoader.load(getClass().getResource(
-					AppScenes.LOGIN.getFxmlFile()));*/
+			Pane root = FXMLLoader.load(getClass().getResource(
+					AppScenes.NEWS_DETAILS.getFxmlFile()));
 			/*Pane root = FXMLLoader.load(getClass().getResource(
 					AppScenes.IMAGE_PICKER.getFxmlFile()));*/
 			//Code for reader main window
-			Pane root = loadReaderMainWindow();
+			//Pane root = loadReaderMainWindow();
 			
 		
 			Scene scene = new Scene(root);
