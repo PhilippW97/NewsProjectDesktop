@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,17 +13,26 @@ import java.util.logging.Logger;
 import application.news.Article;
 import application.news.Categories;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import serverConection.ConnectionManager;
 import serverConection.exceptions.AuthenticationError;
 import serverConection.exceptions.ServerCommunicationError;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.Pane;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -85,6 +95,8 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	
 	
 	//reader main window
 	final Pane loadReaderMainWindow() throws IOException {
