@@ -39,6 +39,7 @@ public class ArticleDetailsController {
 	@FXML
 	private WebView webView;
 	private User usr;
+	private boolean isAbstractText = true;
 
 	/**
 	 * Article to be shown
@@ -69,11 +70,10 @@ public class ArticleDetailsController {
 		this.titleLabel.setText(article.getTitle());
 		this.subtitleLabel.setText(article.getSubtitle());
 		this.categoryLabel.setText(article.getCategory());
+		this.imageView.setImage(article.getImageData());
 		// Load the HTML content into WebView
 		WebEngine webEngine = webView.getEngine();
-		System.out.println("hier wird geloggt "+ this.article);
 		webEngine.loadContent(article.getBodyText(), "text/html");
-		// Similarly, update other UI components with article details as needed
 	}
 
 	@FXML
@@ -84,7 +84,16 @@ public class ArticleDetailsController {
 
 	@FXML
 	void onBody(ActionEvent event) {
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		WebEngine webEngine = webView.getEngine();
+
+		if (isAbstractText) {
+			webEngine.loadContent(article.getAbstractText(), "text/html");
+		} else {
+			webEngine.loadContent(article.getBodyText(), "text/html");
+		}
+
+		// Toggle the boolean variable for the next click
+		isAbstractText = !isAbstractText;
 	}
 
 	@FXML

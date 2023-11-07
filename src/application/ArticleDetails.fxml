@@ -9,9 +9,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.web.WebView?>
 <AnchorPane prefHeight="410.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ArticleDetailsController">
    <children>
@@ -48,7 +45,7 @@
       </HBox>
       <WebView fx:id="webView" layoutX="20.0" layoutY="138.0" prefHeight="213.0" prefWidth="510.0" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="138.0" />
       <JFXButton onAction="#onBack" styleClass="button-light-blue" layoutX="20.0" layoutY="358.0" text="Back" />
-      <JFXButton onAction="#onBody" styleClass="button-light-blue" layoutX="434.0" layoutY="358.0" text="Abstract/Body" />
+      <JFXButton onAction="#onBody" styleClass="button-light-blue" layoutX="480.0" layoutY="358.0" text="Abstract/Body" />
       <Label layoutX="20.0" layoutY="12.0" text="News online for User">
          <padding>
             <Insets top="5.0" />
