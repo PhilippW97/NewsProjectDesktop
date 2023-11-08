@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,9 +60,11 @@ public class Main extends Application {
 			Pane root = loadReaderMainWindow();
 			
 		
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(root,900,600);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.initStyle(StageStyle.UNDECORATED);
+			primaryStage.setTitle("Nifty News - fastest news for you!");
+			primaryStage.getIcons().add(new Image("file:images/newsIcon.png"));
+			primaryStage.initStyle(StageStyle.DECORATED);
 			primaryStage.setScene(scene);
 			/**
 			 * Next tow sentences are used to allow moving window by dragging primary mouse button.
