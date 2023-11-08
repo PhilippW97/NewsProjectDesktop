@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
@@ -322,8 +323,8 @@ public class NewsReaderController {
 		
 	}
 	@FXML
-	public void handleLogin(ActionEvent event) {
-		loggedIn=!loggedIn;
+	public void handleLogin(ActionEvent event) throws IOException {
+		/*loggedIn=!loggedIn;
 		if(loggedIn) {
 			System.out.print("is logged in");
 		}
@@ -331,6 +332,30 @@ public class NewsReaderController {
 			System.out.println("not logged in");
 		}
 		updatePermissions();
+		*/
+		
+		//Scene where event was generated 
+    	Scene parentScene = ((Node) event.getSource()).getScene();
+
+        Stage stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        Parent root = loader.load();
+
+        LoginController loginController = loader.getController();
+
+        stage.initOwner(parentScene.getWindow());
+
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        stage.setOnCloseRequest(ev -> {
+            //loginController.exitForm(ev);
+        });
+
+        Scene secondScene = new Scene(root);
+        stage.setScene(secondScene);
+
+        stage.showAndWait();
 		
 	}
 
@@ -371,6 +396,32 @@ public class NewsReaderController {
 		this.getData();
 		//TODO Update UI
 	}
+	
+	void onNext(ActionEvent event) throws IOException {
+    	//Scene where event was generated 
+    	Scene parentScene = ((Node) event.getSource()).getScene();
+
+        Stage stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        Parent root = loader.load();
+
+        LoginController loginController = loader.getController();
+
+        stage.initOwner(parentScene.getWindow());
+
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        stage.setOnCloseRequest(ev -> {
+            //loginController.exitForm(ev);
+        });
+
+        Scene secondScene = new Scene(root);
+        stage.setScene(secondScene);
+
+        stage.showAndWait();
+
+    }
 
 
 }
