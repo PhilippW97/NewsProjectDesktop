@@ -3,7 +3,6 @@
  */
 package application.utils;
 
-import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +20,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+
 import application.news.Article;
 import application.utils.exceptions.ErrorMalFormedArticle;
 import javafx.embed.swing.SwingFXUtils;
@@ -94,7 +95,9 @@ public class JsonArticle {
 		initKeys();
 		String title = articleData.getString(keys.get("Title"), "");
 		String subtitle = articleData.getString(keys.get("Subtitle"), "");
+		System.out.println("sub: "+subtitle);
 		String abstractText = articleData.getString(keys.get("Abstract"), "");
+		System.out.println("abst: "+abstractText);
 		String bodyText = articleData.getString(keys.get("Body"), "");
 		String category = articleData.getString(keys.get("Category"), "");
 		String deleted = articleData.getString(keys.get("Deleted"), "0");
