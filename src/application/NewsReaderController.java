@@ -355,7 +355,7 @@ public class NewsReaderController {
 	}
 
 	void setConnectionManager (ConnectionManager connection){
-		this.newsReaderModel.setDummyData(true); //System is connected so dummy data are not needed
+		this.newsReaderModel.setDummyData(false); //System is connected so dummy data are not needed
 		this.newsReaderModel.setConnectionManager(connection);
 		this.getData();
 	}
