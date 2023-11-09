@@ -117,8 +117,9 @@ public class NewsReaderController {
 	    };
 	}
 	
-	public void updatePermissions() {
+	public void updatePermissions() {		
 		if(loggedIn) {
+			this.updateWelcomeLabel();
 		    articleNewButton.setDisable(false);
 		    articleNewButton.setVisible(true);
 		}
@@ -129,11 +130,12 @@ public class NewsReaderController {
 	}
 	
 	
+	private void updateWelcomeLabel() {
+		userWelcomeLabel.setText("Welcome, "+usr.getLogin()+"!");
+	}
+
 	@FXML
     void initialize() {
-		//dummy user
-		usr=new User("testLogin",1);
-		userWelcomeLabel.setText("Welcome, "+usr.getLogin()+"!");
 		articleSelected=false;
 		getData();
 		articleEditButton.setDisable(true);
@@ -326,43 +328,34 @@ public class NewsReaderController {
 	}
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException {
-		/*loggedIn=!loggedIn;
-		if(loggedIn) {
-			System.out.print("is logged in");
-		}
-		else {
-			System.out.println("not logged in");
-		}
-		updatePermissions();
-		*/
-		
-		//Scene where event was generated 
     	Scene parentScene = ((Node) event.getSource()).getScene();
-
         Stage stage = new Stage();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
         Parent root = loader.load();
 
         LoginController loginController = loader.getController();
-        
         loginController.setConnectionManager(this.connection);
 
         stage.initOwner(parentScene.getWindow());
-
         stage.initModality(Modality.WINDOW_MODAL);
 
-        stage.setOnCloseRequest(ev -> {
+        /*stage.setOnCloseRequest(ev -> {
             //loginController.exitForm(ev);
-        });
+        });*/
 
         Scene secondScene = new Scene(root);
         stage.setScene(secondScene);
 
         stage.showAndWait();
         
+        this.setUsr(loginController.getLoggedUsr());
+        
+        if (this.getUsr() != null) {
+        	this.loggedIn = true;
+        }
+        
         updatePermissions();
-		
 	}
 
 	@FXML

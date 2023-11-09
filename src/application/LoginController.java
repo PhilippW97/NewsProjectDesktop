@@ -42,13 +42,6 @@ public class LoginController {
 		this.connectionManager = connection;
 		this.loginModel.setConnectionManager(connection);
 	}
-	
-	private boolean isValidLogin(String username, String password) {
-	    // Implement your login verification logic here
-	    // Return true if the login is valid, false otherwise
-	    // You might check against a database, hardcoded credentials, etc.
-	    return false;
-	}
 
 	private void showAlert(String message) {
 	    Alert alert = new Alert(AlertType.ERROR);
@@ -66,8 +59,12 @@ public class LoginController {
 	    try {
 	        loginModel.setConnectionManager(this.connectionManager);
 	        
-	        
 	        connectionManager.login(username, password);
+	        
+	        /*
+	         * username: DEV_TEAM_06
+	         * password: 123006@3
+	         */
 	        
 	        User user = loginModel.validateUser(username, password);
 	        
