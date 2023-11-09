@@ -83,6 +83,8 @@ public class NewsReaderController {
     
     private FilteredList<Article> filteredData;
     
+    private ConnectionManager connection;
+    
 
 
 	public NewsReaderController() {
@@ -343,6 +345,8 @@ public class NewsReaderController {
         Parent root = loader.load();
 
         LoginController loginController = loader.getController();
+        
+        loginController.setConnectionManager(this.connection);
 
         stage.initOwner(parentScene.getWindow());
 
@@ -356,6 +360,8 @@ public class NewsReaderController {
         stage.setScene(secondScene);
 
         stage.showAndWait();
+        
+        updatePermissions();
 		
 	}
 
@@ -381,8 +387,10 @@ public class NewsReaderController {
 	}
 
 	void setConnectionManager (ConnectionManager connection){
+		this.connection = connection;
 		this.newsReaderModel.setDummyData(false); //System is connected so dummy data are not needed
 		this.newsReaderModel.setConnectionManager(connection);
+		//this.loginModel.setConnectionManager(connection);
 		this.getData();
 	}
 	
@@ -405,8 +413,6 @@ public class NewsReaderController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
         Parent root = loader.load();
-
-        LoginController loginController = loader.getController();
 
         stage.initOwner(parentScene.getWindow());
 

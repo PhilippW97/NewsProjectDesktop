@@ -19,6 +19,8 @@ public class LoginController {
 	
 	private User loggedUsr = null;
 	
+	private ConnectionManager connectionManager;
+	
 	@FXML
 	private TextField usernameBox;
 
@@ -28,7 +30,7 @@ public class LoginController {
 	public LoginController (){
 	
 		//Uncomment next sentence to use data from server instead dummy data
-		//loginModel.setDummyData(false);
+		loginModel.setDummyData(false);
 	}
 	
 	User getLoggedUsr() {
@@ -37,6 +39,7 @@ public class LoginController {
 	}
 		
 	void setConnectionManager (ConnectionManager connection) {
+		this.connectionManager = connection;
 		this.loginModel.setConnectionManager(connection);
 	}
 	
@@ -57,18 +60,34 @@ public class LoginController {
 	
 	@FXML
 	public void onLogin(ActionEvent event) {
-		String username = usernameBox.getText();
+	    String username = usernameBox.getText();
 	    String password = passwordBox.getText();
-	    
-	    if (isValidLogin(username, password)) {
-	    	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	    	stage.close();
+
+	    try {
+	        loginModel.setConnectionManager(this.connectionManager);
+	        
+	        
+	        connectionManager.login(username, password);
+	        
+	        User user = loginModel.validateUser(username, password);
+	        
+	        if (user != null) {
+	            // Login successful, you can now close the login window and proceed with the application
+	            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+	            stage.close();
+
+	            // Store the logged-in user (if needed)
+	            loggedUsr = user;
+	        } else {
+	            showAlert("Wrong credentials");
+	        }
+	    } catch (Exception e) {
+	        // Handle any exceptions related to the login process
+	    	System.out.println(e.getMessage());
+	        showAlert("Login error: " + e.getMessage());
 	    }
-	    else {
-	    	
-	    	showAlert("Wrong credentials");
-	    }
-    }
+	}
+
 
 	@FXML
     public void onExit(ActionEvent event) {
