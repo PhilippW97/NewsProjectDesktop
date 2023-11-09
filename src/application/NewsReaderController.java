@@ -236,7 +236,6 @@ public class NewsReaderController {
 				ArticleDetailsController controller = loader.<ArticleDetailsController>getController();
 	            if (currentArticle != null) {
 	                controller.setArticle(currentArticle);
-					System.out.println(currentArticle.getBodyText());
 	            }
 			}
 			// Article Edit and Create are handled in the same controller
@@ -356,7 +355,7 @@ public class NewsReaderController {
 	}
 
 	void setConnectionManager (ConnectionManager connection){
-		this.newsReaderModel.setDummyData(false); //System is connected so dummy data are not needed
+		this.newsReaderModel.setDummyData(true); //System is connected so dummy data are not needed
 		this.newsReaderModel.setConnectionManager(connection);
 		this.getData();
 	}
