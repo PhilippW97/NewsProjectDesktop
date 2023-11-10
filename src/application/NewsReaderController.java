@@ -78,6 +78,10 @@ public class NewsReaderController {
     private JFXButton articleNewButton;
     @FXML
     private Label userWelcomeLabel;
+    @FXML
+    private JFXButton loginButton; 
+    @FXML
+    private JFXButton logoutButton;
     
     
     
@@ -117,31 +121,42 @@ public class NewsReaderController {
 	    };
 	}
 	
-	public void updatePermissions() {		
+	public void updatePermissions() {
 		if(loggedIn) {
-			this.updateWelcomeLabel();
+			loginButton.setDisable(true);
+    	    loginButton.setVisible(false);
+    	    logoutButton.setDisable(false);
+    	    logoutButton.setVisible(true);
+			this.updateWelcomeLabel(usr.getLogin());
 		    articleNewButton.setDisable(false);
 		    articleNewButton.setVisible(true);
 		}
 		else {
+			logoutButton.setDisable(true);
+	    	logoutButton.setVisible(false);
+	    	loginButton.setDisable(false);
+	    	loginButton.setVisible(true);
+			this.updateWelcomeLabel("unknown user");
 		    articleNewButton.setDisable(true);
 		    articleNewButton.setVisible(false);
 		}
 	}
 	
 	
-	private void updateWelcomeLabel() {
-		userWelcomeLabel.setText("Welcome, "+usr.getLogin()+"!");
+	private void updateWelcomeLabel(String username) {
+		userWelcomeLabel.setText("Welcome, "+ username +"!");
 	}
 
 	@FXML
     void initialize() {
 		articleSelected=false;
 		getData();
+		logoutButton.setDisable(true);
 		articleEditButton.setDisable(true);
 	    articleDeleteButton.setDisable(true);
 	    articleDetailsButton.setDisable(true);
 	    articleNewButton.setDisable(true);
+	    logoutButton.setVisible(false);
 	    articleEditButton.setVisible(false);
 	    articleDeleteButton.setVisible(false);
 	    articleDetailsButton.setVisible(false);
@@ -354,6 +369,14 @@ public class NewsReaderController {
         if (this.getUsr() != null) {
         	this.loggedIn = true;
         }
+        
+        updatePermissions();
+	}
+	
+	@FXML
+	public void handleLogout(ActionEvent event) throws IOException {     
+		this.loggedIn = false;
+		this.setUsr(null);
         
         updatePermissions();
 	}
