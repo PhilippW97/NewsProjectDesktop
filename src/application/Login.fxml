@@ -3,7 +3,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-
-<AnchorPane fx:id="loginWindow" prefHeight="294.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
-   
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<AnchorPane fx:id="loginWindow" prefHeight="294.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+    <children>
+        <Button onAction="#Login" fx:id="login" layoutX="168.0" layoutY="224.0" mnemonicParsing="false" text="Login" />
+        <Label layoutX="39.0" layoutY="81.0" text="username:" />
+        <Label layoutX="40.0" layoutY="137.0" text="password:" />
+        <TextField fx:id="username" layoutX="136.0" layoutY="76.0" text="DEV_TEAM_06" />
+        <TextField fx:id="password" layoutX="136.0" layoutY="132.0" text="123006@3" />
+    </children>
 </AnchorPane>

@@ -1,9 +1,8 @@
 /**
- * 
+ *
  */
 package application.utils;
 
-import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +20,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+
 import application.news.Article;
 import application.utils.exceptions.ErrorMalFormedArticle;
 import javafx.embed.swing.SwingFXUtils;
@@ -27,7 +28,7 @@ import javafx.scene.image.Image;
 
 /**
  * This class provide services for translate an article to JSon and viceversa
- * 
+ *
  * @author agonzalez
  *
  */
@@ -36,7 +37,7 @@ public class JsonArticle {
 
 	/**
 	 * Build a JsonObject for the given article
-	 * 
+	 *
 	 * @param article article to be transformed
 	 * @return json data
 	 */
@@ -53,11 +54,11 @@ public class JsonArticle {
 		buildJSon.add(keys.get("Subtitle"), data);
 		data = article.getBodyText();
 		data = (data == null) ? "" : data;
-		data = extractBody(data); 
+		data = extractBody(data);
 		buildJSon.add(keys.get("Body"), data);
 		data = article.getAbstractText();
 		data = (data == null) ? "" : data;
-		data = extractBody(data); 
+		data = extractBody(data);
 		buildJSon.add(keys.get("Abstract"), data);
 		Image image = article.getImageData();
 		// Converting image data into a String
@@ -84,7 +85,7 @@ public class JsonArticle {
 
 	/**
 	 * Create an article from a JsonObject
-	 * 
+	 *
 	 * @param articleData json data
 	 * @return the article
 	 * @throws ErrorMalFormedArticle an article was found without title or category
@@ -94,7 +95,9 @@ public class JsonArticle {
 		initKeys();
 		String title = articleData.getString(keys.get("Title"), "");
 		String subtitle = articleData.getString(keys.get("Subtitle"), "");
+		System.out.println("sub: "+subtitle);
 		String abstractText = articleData.getString(keys.get("Abstract"), "");
+		System.out.println("abst: "+abstractText);
 		String bodyText = articleData.getString(keys.get("Body"), "");
 		String category = articleData.getString(keys.get("Category"), "");
 		String deleted = articleData.getString(keys.get("Deleted"), "0");
@@ -140,7 +143,7 @@ public class JsonArticle {
 	}
 
 	/**
-	 * Convert a image data given in an string into an BufferedImage 
+	 * Convert a image data given in an string into an BufferedImage
 	 * @param imageData String with image data
 	 * @return the corresponding image
 	 */
@@ -161,9 +164,9 @@ public class JsonArticle {
 	/**
 	 * This method load a file that contains json data into a jsonObject If file
 	 * can't be read this method return null
-	 * 
+	 *
 	 * @param fileName File to read
-	 * @return jsonObject 
+	 * @return jsonObject
 	 */
 	public static JsonObject readFile(String fileName) {
 		JsonObject result = null;
@@ -182,7 +185,7 @@ public class JsonArticle {
 	}
 
 	/**
-	 * this method transform an image into a String in order to attach it 
+	 * this method transform an image into a String in order to attach it
 	 * @param image to be converted
 	 * @return string corresponding to the given image
 	 */
@@ -203,7 +206,7 @@ public class JsonArticle {
 	/**
 	 * This method return body tag from html string. If there is'nt body the original
 	 * text is returned
-	 * 
+	 *
 	 * @param text html text in wich the body tag is looked for
 	 * @return return body tag from html string. If there is'nt body the original text is returned
 	 */

@@ -28,6 +28,7 @@ class LoginModel {
 	/**
 	 * The ModelManager is used to communicate with articles server
 	 */
+	public static User user;
 	private ConnectionManager connectionManager;
 	LoginModel(){
 		//Dummy data for test
@@ -39,25 +40,25 @@ class LoginModel {
 		}
 		users.get("Admin1:admin1").setAdmin(true);
 	}
-	
+
 	boolean usingDummyData(){
 		return this.dummyData;
 	}
-	
 
-	
+
+
 	void setDummyData(boolean dummy){
 		this.dummyData = dummy;
 	}
 	/**
-	 * Sect the connection manager. Connection manager is needed for using real data 
-	 * @param connection connection to be used in the login process 
+	 * Sect the connection manager. Connection manager is needed for using real data
+	 * @param connection connection to be used in the login process
 	 */
 	void setConnectionManager(ConnectionManager connection) {
 		this.connectionManager = connection;
 		this.setDummyData(false);
 	}
-	
+
 	/**
 	 * Method for user validation. Override is not allowed
 	 * @param login user id
@@ -67,21 +68,22 @@ class LoginModel {
 	final User validateUser (String login, String passwd){
 		User usr = null;
 		if (this.dummyData){
-			usr = users.get(login+":"+passwd);	
+			usr = users.get(login+":"+passwd);
 		}
 		else
 		{
 			try {
 				connectionManager.login(login, passwd);
-				usr = new User (login, 
+				usr = new User (login,
 						Integer.parseInt(connectionManager.getIdUser()));
 				usr.setAdmin(connectionManager.isAdministrator());
+				user=usr;
 			} catch (AuthenticationError e) {
 				Logger.getGlobal().log(Level.INFO,"Login error! incorrect user or password!!");
 			}
-			
+
 		}
-		
+
 		return usr;
 	}
 }

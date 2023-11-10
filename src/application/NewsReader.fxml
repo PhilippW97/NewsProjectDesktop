@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewsReaderController">
+<AnchorPane prefHeight="553.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewsReaderController">
+   <children>
+      <ListView fx:id="articleList" layoutX="24.0" layoutY="211.0" prefHeight="307.0" prefWidth="314.0" />
+      <ImageView fx:id="imageViewer" fitHeight="172.0" fitWidth="239.0" layoutX="555.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" />
+      <MenuButton fx:id="categoryMenu" layoutX="24.0" layoutY="138.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" text="All">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="Sports" />
+          <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="National" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="Economy" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="International" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="Technology" />
+            <MenuItem mnemonicParsing="false" onAction="#handleCategorySelection" text="All" />
+        </items>
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </MenuButton>
+      <JFXButton fx:id="articleDetailsButton" layoutX="691.0" layoutY="503.0" onAction="#viewArticle" prefHeight="30.0" prefWidth="92.0" style="-fx-background-color: #555555;" text="Read More">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></JFXButton>
+      <Label layoutX="24.0" layoutY="174.0" prefHeight="26.0" prefWidth="41.0" text="Filter:">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></Label>
+      <Label fx:id="articleSelectedLabel" alignment="CENTER" layoutX="361.0" layoutY="200.0" prefHeight="58.0" prefWidth="422.0" text="MyArticle" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font></Label>
+      <TextField fx:id="textFilter" layoutX="80.0" layoutY="174.0" onKeyTyped="#onNewChar">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></TextField>
+      <WebView fx:id="abstractViewer" layoutX="361.0" layoutY="263.0" prefHeight="230.0" prefWidth="428.0" />
+      <JFXButton fx:id="articleEditButton" layoutX="473.0" layoutY="503.0" onAction="#editArticle" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: orange;" text="Edit">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="articleDeleteButton" buttonType="RAISED" layoutX="372.0" layoutY="503.0" onAction="#deleteArticle" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: red;" text="Delete">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="fileLoadButton" layoutX="242.0" layoutY="28.0" onAction="#loadArticleFromFile" prefHeight="39.0" prefWidth="152.0" style="-fx-background-color: blue;" text="Load Article from File" />
+      <JFXButton fx:id="articleNewButton" layoutX="422.0" layoutY="28.0" onAction="#createArticle" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: blue;" text="New Article" />
+      <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="24.0" layoutY="28.0" onAction="#handleLogin" prefHeight="39.0" prefWidth="68.0" style="-fx-background-color: blue;" text="Login" />
+      <Label fx:id="userWelcomeLabel" layoutX="14.0" layoutY="82.0" prefHeight="18.0" prefWidth="239.0" text="Welcome, unknown user!">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

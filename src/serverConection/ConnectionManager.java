@@ -63,7 +63,7 @@ public class ConnectionManager {
 	public static final String ATTR_FORMAT = "application/x-www-form-urlencoded; charset=UTF-8";
 
 	/**
-	 * 
+	 *
 	 * @param ini Initializes entity manager urls and users
 	 * @throws AuthenticationError
 	 */
@@ -73,7 +73,7 @@ public class ConnectionManager {
 		}
 
 		// disable auth from self signed certificates
-		requireSelfSigned =  (ini.containsKey(ATTR_REQUIRE_SELF_CERT) 
+		requireSelfSigned =  (ini.containsKey(ATTR_REQUIRE_SELF_CERT)
 								&& ((String)ini.get(ATTR_REQUIRE_SELF_CERT)).equalsIgnoreCase("TRUE"));
 
 		// add proxy http/https to the system
@@ -111,7 +111,7 @@ public class ConnectionManager {
 
 	/**
 	 * Login onto remote service
-	 * @param username the username 
+	 * @param username the username
 	 * @param password the password for the user
 	 * @throws AuthenticationError
 	 */
@@ -119,14 +119,14 @@ public class ConnectionManager {
 		try {
 			String parameters =  "";
 			String request = serviceUrl + "login";
-			setLoggedOK(false); 
+			setLoggedOK(false);
 			HttpURLConnection connection;
 			connection = prepareHttpURLConection(
-				request, 
-				parameters, 
-				"POST", 
+				request,
+				parameters,
+				"POST",
 				"application/json; charset=UTF-8"
-			);      
+			);
 
 			JsonObjectBuilder jsonParam =  Json.createObjectBuilder();
 
@@ -134,10 +134,10 @@ public class ConnectionManager {
 			jsonParam.add("passwd", password);
 			OutputStream os = connection.getOutputStream();
 			JsonWriter jsonWriter = Json.createWriter(os);
-			jsonWriter.writeObject(jsonParam.build());			
+			jsonWriter.writeObject(jsonParam.build());
 			os.close();
-			int HttpResult =connection.getResponseCode();  
-			if (HttpResult == HttpURLConnection.HTTP_OK) { 
+			int HttpResult =connection.getResponseCode();
+			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				try (InputStream is = connection.getInputStream();
 						JsonReader rdr = Json.createReader(is)) {//try
 					JsonObject jsonObj = rdr.readObject();
@@ -145,24 +145,24 @@ public class ConnectionManager {
 
 					idUser = jsonObj.getString("user", "");
 					authType = jsonObj.getString("Authorization", "");
-					apikey =   jsonObj.getString("apikey", "");		
+					apikey =   jsonObj.getString("apikey", "");
 					isAdministrator = jsonObj.containsKey("administrator");
 					setLoggedOK(true); //user was logged;
 				}//try
-			} else {  
-				Logger.getGlobal().log(Level.SEVERE,connection.getResponseMessage()); 
+			} else {
+				Logger.getGlobal().log(Level.SEVERE,connection.getResponseMessage());
 				throw new AuthenticationError(connection.getResponseMessage());
-			}  
-		} catch (MalformedURLException e) {  
-			//e.printStackTrace();  
+			}
+		} catch (MalformedURLException e) {
+			//e.printStackTrace();
 			throw new AuthenticationError(e.getMessage());
-		}  
-		catch (IOException e) {  
-			//e.printStackTrace();  
+		}
+		catch (IOException e) {
+			//e.printStackTrace();
 			throw new AuthenticationError(e.getMessage());
-		} 
-		catch (Exception e) {  
-			//e.printStackTrace();  
+		}
+		catch (Exception e) {
+			//e.printStackTrace();
 			throw new AuthenticationError(e.getMessage());
 		}
 	}
@@ -170,7 +170,7 @@ public class ConnectionManager {
 	/****************************/
 
 	/**
-	 * 
+	 *
 	 * @return user id logged in
 	 */
 	public String getIdUser(){
@@ -178,7 +178,7 @@ public class ConnectionManager {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return true if user logged is an administrator
 	 */
 	public boolean isAdministrator(){
@@ -187,11 +187,11 @@ public class ConnectionManager {
 
 
 	/**
-	 * 
+	 *
 	 * @return auth token header for user logged in
 	 */
 	private  String getAuthTokenHeader(){
-		//trick for anonymous group APIKEY 
+		//trick for anonymous group APIKEY
 		String aux = (authType == null)? "PUIRESTAUTH": authType;
 		String authHeader = aux + " apikey=" + apikey;
 		return authHeader;
@@ -226,18 +226,18 @@ public class ConnectionManager {
 	 * This method only retrieves title, subtitle, category, and thumbnail for each article.
 	 * @return the list of articles in remote service
 	 * @throws ServerCommunicationError
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public List<Article> getArticles() throws ServerCommunicationError, IOException {
 		List<Article> result = new ArrayList<>();
 		String parameters =  "";
-		String request = serviceUrl + "articles"; 
+		String request = serviceUrl + "articles";
 		HttpURLConnection connection =  this.getHttpURLConection(
-			request, 
+			request,
 			parameters,
 			"GET",
 			ATTR_FORMAT
-		); 
+		);
 
 		if (connection != null) {
 			try (InputStream is = connection.getInputStream(); JsonReader rdr = Json.createReader(is)) {
@@ -246,12 +246,12 @@ public class ConnectionManager {
 
 				for (int i = 0; i < arryObj.size(); i++) {//for
 					JsonObject obj = arryObj.getJsonObject(i);
-					System.out.println("element read ("+i+"): "+obj.toString());	
+					System.out.println("element read ("+i+"): "+obj.toString());
 					Article article;
 					//article = getFullArticle(obj);
 					//Get title, subtitle, category and thumbnail
 					article =  JsonArticle.jsonToArticle(obj);
-					result.add(article);	
+					result.add(article);
 				}//for
 
 			}//Try 2
@@ -261,15 +261,15 @@ public class ConnectionManager {
 				e.printStackTrace();
 				Logger.getGlobal().log(Level.SEVERE, e.getMessage());
 				return null;
-			} 
+			}
 		}//IF OK
-	  
+
 		return result;
 	}
 
 	/**
 	 * Get full article from server
-	 * 
+	 *
 	 * @param idArticle article id to download
 	 * @return article
 	 */
@@ -290,15 +290,15 @@ public class ConnectionManager {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Generate the article from a 
+	 * Generate the article from a
 	 * json retrieved from the server call
-	 * 
+	 *
 	 * @param obj json article
 	 * @return final article
 	 */
-/*	
+/*
  * private Article getFullArticle(JsonObject obj) {
 		try {
 			Article article;
@@ -316,10 +316,10 @@ public class ConnectionManager {
 			return null;
 		}
 	}*/
-	
+
 
 	/**
-	 * This method retrieve the full article 
+	 * This method retrieve the full article
 	 * @param idArticle the id for article to retrieve
 	 * @return a jsonObject with the article data
 	 */
@@ -327,11 +327,11 @@ public class ConnectionManager {
 		String parameters =  "";
 		String request = serviceUrl + "article/" + idArticle;
 		HttpURLConnection connection =  this.getHttpURLConection(
-			request, 
+			request,
 			parameters,
-			"GET", 
+			"GET",
 			ATTR_FORMAT
-		); 
+		);
 
 		if (connection != null) {//IF
 			try (InputStream is = connection.getInputStream(); JsonReader rdr = Json.createReader(is)) {
@@ -345,7 +345,7 @@ public class ConnectionManager {
 	}
 
 	/**
-	 * Send an article to server. 
+	 * Send an article to server.
 	 * @param article article to be saved
 	 * @return the article id
 	 * @throws ServerCommunicationError
@@ -355,16 +355,16 @@ public class ConnectionManager {
 			String parameters =  "";
 			String request = serviceUrl + "article";
 			HttpURLConnection connection = prepareHttpURLConection(
-				request, 
-				parameters, 
-				"POST", 
+				request,
+				parameters,
+				"POST",
 				"application/json; charset=UTF-8"
 			);
 
 			OutputStream os = connection.getOutputStream();
 			JsonWriter jsonWriter = Json.createWriter(os);
 			JsonObject obj = JsonArticle.articleToJson(article);
-			jsonWriter.writeObject(obj);			
+			jsonWriter.writeObject(obj);
 			os.close();
 
 			int HttpResult = connection.getResponseCode();
@@ -377,13 +377,13 @@ public class ConnectionManager {
 					String id = jsonObj.getString("id", "0");
 					idArticle = Integer.parseInt(id);
 				}
-				
+
 				Logger.getGlobal().log(Level.INFO, "Object inserted, returned id:" + idArticle);
 				return idArticle;
-			} else {  
+			} else {
 				throw new ServerCommunicationError(connection.getResponseMessage());
-			}  
-		} catch (Exception e) {  
+			}
+		} catch (Exception e) {
 			Logger.getGlobal().log(
 				Level.SEVERE,
 				"Inserting article [" + article.getTitle() + "] : " + e.getClass() + " ( "+e.getMessage() + ")"
@@ -403,26 +403,26 @@ public class ConnectionManager {
 			String parameters =  "";
 			String request = serviceUrl + "article/" + idArticle;
 			HttpURLConnection connection = this.getHttpURLConection(
-				request, 
-				parameters, 
-				"DELETE", 
+				request,
+				parameters,
+				"DELETE",
 				ATTR_FORMAT
 			);
 
 			if (connection != null) {
 				Logger.getGlobal().log (Level.INFO, "Article (id:" + idArticle + ") deleted");
 			}
-		} catch (Exception e) {  
+		} catch (Exception e) {
 			Logger.getGlobal().log(
-				Level.SEVERE, 
+				Level.SEVERE,
 				"Deleting article (id:" + idArticle + ") : " + e.getClass() + " ( "+e.getMessage() + ")"
 			);
 
 			throw new ServerCommunicationError(e.getClass() + " ( "+e.getMessage() + ")");
-		}  
+		}
 	}
 
-	
+
 
 
 
@@ -430,12 +430,12 @@ public class ConnectionManager {
 	private HttpURLConnection getHttpURLConection (String request, String parameters,
 			String requestMethd, String contentType) {
 		HttpURLConnection connection = null;
-		
+
 		try {
 			connection = prepareHttpURLConection(request, parameters, requestMethd, contentType);
-			int HttpResult =connection.getResponseCode();  
+			int HttpResult =connection.getResponseCode();
 
-			if (HttpResult != HttpURLConnection.HTTP_OK 
+			if (HttpResult != HttpURLConnection.HTTP_OK
 					&& HttpResult !=HttpURLConnection.HTTP_NO_CONTENT ) {
 				connection = null; //It was impossible establish a connection
 			}
@@ -454,28 +454,29 @@ public class ConnectionManager {
 		} catch (KeyStoreException e) {
 			e.printStackTrace();
 			connection = null;
-		} 
+		}
 		return connection;
 	}
-	
-	private HttpURLConnection prepareHttpURLConection (String request, String parameters, String requestMethd, String contentType) 
+
+	private HttpURLConnection prepareHttpURLConection (String request, String parameters, String requestMethd, String contentType)
 			throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 
 		HttpURLConnection connection = null;
 		URL url;
 		url = new URL(request);
-		connection = (HttpURLConnection) url.openConnection();  
+		connection = (HttpURLConnection) url.openConnection();
 
 		if (requireSelfSigned) {
-			TrustModifier.relaxHostChecking(connection); 
+			TrustModifier.relaxHostChecking(connection);
 		}
 
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
-		connection.setInstanceFollowRedirects(false); 
-		connection.setRequestMethod(requestMethd); 
-		connection.setRequestProperty("Content-Type",contentType); 
-		connection.setRequestProperty("Authorization", getAuthTokenHeader()); //pasar API KEY 
+		connection.setInstanceFollowRedirects(false);
+		connection.setRequestMethod(requestMethd);
+		connection.setRequestProperty("Content-Type",contentType);
+		connection.setRequestProperty("Authorization", getAuthTokenHeader()); //pasar API KEY
+		System.out.println(getAuthTokenHeader());
 		connection.setRequestProperty("charset", "utf-8");
 		connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
 		connection.setUseCaches (false);
