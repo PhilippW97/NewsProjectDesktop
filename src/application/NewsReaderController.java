@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
@@ -77,10 +78,16 @@ public class NewsReaderController {
     private JFXButton articleNewButton;
     @FXML
     private Label userWelcomeLabel;
+    @FXML
+    private JFXButton loginButton; 
+    @FXML
+    private JFXButton logoutButton;
     
     
     
     private FilteredList<Article> filteredData;
+    
+    private ConnectionManager connection;
     
 
 
@@ -116,27 +123,40 @@ public class NewsReaderController {
 	
 	public void updatePermissions() {
 		if(loggedIn) {
+			loginButton.setDisable(true);
+    	    loginButton.setVisible(false);
+    	    logoutButton.setDisable(false);
+    	    logoutButton.setVisible(true);
+			this.updateWelcomeLabel(usr.getLogin());
 		    articleNewButton.setDisable(false);
 		    articleNewButton.setVisible(true);
 		}
 		else {
+			logoutButton.setDisable(true);
+	    	logoutButton.setVisible(false);
+	    	loginButton.setDisable(false);
+	    	loginButton.setVisible(true);
+			this.updateWelcomeLabel("unknown user");
 		    articleNewButton.setDisable(true);
 		    articleNewButton.setVisible(false);
 		}
 	}
 	
 	
+	private void updateWelcomeLabel(String username) {
+		userWelcomeLabel.setText("Welcome, "+ username +"!");
+	}
+
 	@FXML
     void initialize() {
-		//dummy user
-		usr=new User("testLogin",1);
-		userWelcomeLabel.setText("Welcome, "+usr.getLogin()+"!");
 		articleSelected=false;
 		getData();
+		logoutButton.setDisable(true);
 		articleEditButton.setDisable(true);
 	    articleDeleteButton.setDisable(true);
 	    articleDetailsButton.setDisable(true);
 	    articleNewButton.setDisable(true);
+	    logoutButton.setVisible(false);
 	    articleEditButton.setVisible(false);
 	    articleDeleteButton.setVisible(false);
 	    articleDetailsButton.setVisible(false);
@@ -321,16 +341,43 @@ public class NewsReaderController {
 		
 	}
 	@FXML
-	public void handleLogin(ActionEvent event) {
-		loggedIn=!loggedIn;
-		if(loggedIn) {
-			System.out.print("is logged in");
-		}
-		else {
-			System.out.println("not logged in");
-		}
-		updatePermissions();
-		
+	public void handleLogin(ActionEvent event) throws IOException {
+    	Scene parentScene = ((Node) event.getSource()).getScene();
+        Stage stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        Parent root = loader.load();
+
+        LoginController loginController = loader.getController();
+        loginController.setConnectionManager(this.connection);
+
+        stage.initOwner(parentScene.getWindow());
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        /*stage.setOnCloseRequest(ev -> {
+            //loginController.exitForm(ev);
+        });*/
+
+        Scene secondScene = new Scene(root);
+        stage.setScene(secondScene);
+
+        stage.showAndWait();
+        
+        this.setUsr(loginController.getLoggedUsr());
+        
+        if (this.getUsr() != null) {
+        	this.loggedIn = true;
+        }
+        
+        updatePermissions();
+	}
+	
+	@FXML
+	public void handleLogout(ActionEvent event) throws IOException {     
+		this.loggedIn = false;
+		this.setUsr(null);
+        
+        updatePermissions();
 	}
 
 	@FXML
@@ -355,8 +402,10 @@ public class NewsReaderController {
 	}
 
 	void setConnectionManager (ConnectionManager connection){
+		this.connection = connection;
 		this.newsReaderModel.setDummyData(false); //System is connected so dummy data are not needed
 		this.newsReaderModel.setConnectionManager(connection);
+		//this.loginModel.setConnectionManager(connection);
 		this.getData();
 	}
 	
@@ -370,6 +419,30 @@ public class NewsReaderController {
 		this.getData();
 		//TODO Update UI
 	}
+	
+	void onNext(ActionEvent event) throws IOException {
+    	//Scene where event was generated 
+    	Scene parentScene = ((Node) event.getSource()).getScene();
+
+        Stage stage = new Stage();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        Parent root = loader.load();
+
+        stage.initOwner(parentScene.getWindow());
+
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        stage.setOnCloseRequest(ev -> {
+            //loginController.exitForm(ev);
+        });
+
+        Scene secondScene = new Scene(root);
+        stage.setScene(secondScene);
+
+        stage.showAndWait();
+
+    }
 
 
 }
