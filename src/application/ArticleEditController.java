@@ -90,7 +90,12 @@ public class ArticleEditController {
 	@FXML
 	private ChoiceBox<Categories> category;
 
+	@FXML
+	private Label Abstract_Body;
 
+	@FXML
+	private Label Type;
+	Article article;
 
 	@FXML
 	void onImageClicked(MouseEvent event) {
@@ -166,36 +171,88 @@ public class ArticleEditController {
 
 	@FXML
 	void Save_to_File(){
-
-		Article article=new Article();
 		article.setTitle(Title.getText());
 		article.setCategory(category.getValue().toString());
 		article.setImageData(image.getImage());
 		article.setSubtitle(Subtitle.getText());
-		article.setBodyText(body.getText());
+		if(Abstract_Body.getText().equals("Body")){
+			article.setBodyText(body.getText());
+		}else {
+			article.setAbstractText(body.getText());
+		}
+
 		article.setIdUser(usr.getIdUser());
-		this.setArticle(article);
-		write();
+		setArticle(article);
+		try {
+			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")||getArticle().getSubtitle()==null||getArticle().getSubtitle().equals("")){
+				Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+				alert.showAndWait();
+			}else {
+				if (send()) {
+					write();
+				}
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			alert.showAndWait();
+		}
 	}
 
 	@FXML
-	void Send_and_Back(Event event) throws AuthenticationError, ServerCommunicationError {
-		Article article=new Article();
+	void Abstract_or_Body(){
+		if(Abstract_Body.getText().equals("Abstract")){
+			article.setAbstractText(body.getText());
+			body.clear();
+			body.setText(article.getBodyText());
+			Abstract_Body.setText("Body");
+		}else if(Abstract_Body.getText().equals("Body")){
+			article.setBodyText(body.getText());
+			body.clear();
+			body.setText(article.getAbstractText());
+			Abstract_Body.setText("Abstract");
+		}
+	}
+
+	@FXML
+	void html_or_text(){
+		if(Type.getText().equals("Type:Html")){
+			Type.setText("Type:Txt");
+		}else if(Type.getText().equals("Type:Txt")){
+			Type.setText("Type:Html");
+		}
+	}
+
+
+	@FXML
+	void Send_and_Back(Event event)  {
 		article.setTitle(Title.getText());
 		article.setCategory(category.getValue().toString());
 		article.setImageData(image.getImage());
 		article.setSubtitle(Subtitle.getText());
-		article.setBodyText(body.getText());
-		article.setAbstractText(body.getText());
-		article.setIdUser(usr.getIdUser());
-		this.setArticle(article);
-		if(send()){
-			int i = connection.saveArticle(article);
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			stage.close();
-
-
+		if(Abstract_Body.getText().equals("Body")){
+			article.setBodyText(body.getText());
+		}else {
+			article.setAbstractText(body.getText());
 		}
+		article.setIdUser(usr.getIdUser());
+		setArticle(article);
+		try {
+			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")||getArticle().getSubtitle()==null||getArticle().getSubtitle().equals("")){
+				Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+				alert.showAndWait();
+			}else {
+				if(send()){
+					int i = connection.saveArticle(article);
+					Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+					stage.close();
+
+				}
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			alert.showAndWait();
+		}
+
 	}
 
 	/**
@@ -218,7 +275,7 @@ public class ArticleEditController {
 	 */
 	void setArticle(Article article) {
 		this.editingArticle = (article != null) ? new ArticleEditModel(article) : new ArticleEditModel(usr);
-		if(article!=null) {
+		if(article!=null&&article.getTitle()!=null) {
 			Title.setText(article.getTitle());
 			body.setText(article.getAbstractText());
 			body.setWrapText(true);
@@ -259,6 +316,10 @@ public class ArticleEditController {
 	@FXML
 	void initialize() {
 	image.setImage(new Image("file:resources/1.png"));
+	Type.setText("Type:Txt");
+	article=new Article();
+	article.setBodyText("");
+	article.setAbstractText("");
 		ArrayList<Categories> strings=new ArrayList<>();
 		strings.add(Categories.ECONOMY);
 		strings.add(Categories.INTERNATIONAL);

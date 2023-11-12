@@ -268,7 +268,7 @@ public class NewsReaderController {
 				}
 				// don't send article when you create a new one
 				else if(title.equals("Article Create")) {
-					controller.setArticle(null);
+					controller.setArticle(new Article());
 					controller.setUsr(usr);
 					controller.setConnectionMannager(newsReaderModel.getConnectionManager());
 				}
