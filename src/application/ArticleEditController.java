@@ -138,7 +138,7 @@ public class ArticleEditController {
 		Categories category = Categories.valueOf(getArticle().getCategory().toUpperCase(Locale.ENGLISH)); //TODO Get article cateory
 		if (titleText == null || category == null ||
 				titleText.equals("") || category == Categories.ALL) {
-			Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
 			alert.showAndWait();
 			return false;
 		}
@@ -184,16 +184,16 @@ public class ArticleEditController {
 		article.setIdUser(usr.getIdUser());
 		setArticle(article);
 		try {
-			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")||getArticle().getSubtitle()==null||getArticle().getSubtitle().equals("")){
-				Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")){
+				Alert alert = new Alert(AlertType.ERROR, "It's impossible to save the article! Title is mandatory.", ButtonType.OK);
 				alert.showAndWait();
 			}else {
-				if (send()) {
-					write();
-				}
+				write();
+				Alert alert = new Alert(AlertType.CONFIRMATION, "Succesfully saved the article in the \"saveNews\" folder inside the project.", ButtonType.OK);
+				alert.showAndWait();
 			}
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "It's impossible to save the article! Title is mandatory.", ButtonType.OK);
 			alert.showAndWait();
 		}
 	}
@@ -237,8 +237,8 @@ public class ArticleEditController {
 		article.setIdUser(usr.getIdUser());
 		setArticle(article);
 		try {
-			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")||getArticle().getSubtitle()==null||getArticle().getSubtitle().equals("")){
-				Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")||getArticle().getCategory()==null||getArticle().getCategory().equals("")){
+				Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
 				alert.showAndWait();
 			}else {
 				if(send()){
@@ -249,7 +249,7 @@ public class ArticleEditController {
 				}
 			}
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, "Imposible send the article!! Title and categoy are mandatory", ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
 			alert.showAndWait();
 		}
 
