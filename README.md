@@ -1,4 +1,3 @@
-# My Project
+# Exercise: News Manager Desktop
 
-This is a description of my project.
-
+Group: Deng Jiaqi, Guilherme Garrido, Phillip Wohlfahrt und Philipp Walter
