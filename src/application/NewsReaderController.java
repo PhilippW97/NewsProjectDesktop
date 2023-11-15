@@ -144,7 +144,7 @@ public class NewsReaderController {
 			loginButton.setDisable(false);
 			loginButton.setVisible(true);
 			this.updateWelcomeLabel("unknown user");
-			setUsr(new User("test",1));
+			setUsr(new User("unknown",1));
 			articleNewButton.setDisable(true);
 			articleNewButton.setVisible(false);
 		}

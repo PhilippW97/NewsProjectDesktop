@@ -61,7 +61,7 @@ public class ArticleDetailsController {
 		}
 		//TODO Update UI information
 		else {
-			userIdLabel.setText(usr.toString());
+			userIdLabel.setText(usr.getLogin());
 		}
 	}
 
