@@ -3,7 +3,7 @@ module NewsManager {
 	requires javafx.fxml;
 	requires transitive javafx.graphics;
 	requires com.jfoenix;
-	//requires materialfx;
+	requires materialfx;
 	requires javafx.web;
 	requires java.json;
 	requires java.logging;

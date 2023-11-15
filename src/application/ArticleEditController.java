@@ -97,6 +97,11 @@ public class ArticleEditController {
 	private Label Type;
 	Article article;
 
+	NewsReaderController newsReaderController;
+
+	public void setNewsReaderController(NewsReaderController newsReaderController) {
+		this.newsReaderController = newsReaderController;
+	}
 	@FXML
 	void onImageClicked(MouseEvent event) {
 		if (event.getClickCount() >= 2) {
@@ -243,6 +248,7 @@ public class ArticleEditController {
 			}else {
 				if(send()){
 					int i = connection.saveArticle(article);
+					newsReaderController.updatePermissions();
 					Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 					stage.close();
 

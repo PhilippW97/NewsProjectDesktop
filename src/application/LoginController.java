@@ -46,6 +46,9 @@ public class LoginController {
 	@FXML
 	private TextField passwordBox;
 
+
+
+
 	public LoginController (){
 
 		//Uncomment next sentence to use data from server instead dummy data

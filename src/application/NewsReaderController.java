@@ -148,6 +148,7 @@ public class NewsReaderController {
 			articleNewButton.setDisable(true);
 			articleNewButton.setVisible(false);
 		}
+		getData();
 	}
 
 
@@ -283,8 +284,9 @@ public class NewsReaderController {
 		            if (currentArticle != null) {
 						ArticleEditController controller1 = loader.<ArticleEditController>getController();
 		                controller1.setArticle(currentArticle);
-						controller.setUsr(usr);
-						controller.setConnectionMannager(newsReaderModel.getConnectionManager());
+						controller1.setUsr(usr);
+						controller1.setConnectionMannager(newsReaderModel.getConnectionManager());
+						controller1.setNewsReaderController(this);
 		            }
 				}
 				// don't send article when you create a new one
@@ -292,6 +294,7 @@ public class NewsReaderController {
 					controller.setArticle(new Article());
 					controller.setUsr(usr);
 					controller.setConnectionMannager(newsReaderModel.getConnectionManager());
+					controller.setNewsReaderController(this);
 				}
 			}
 
@@ -434,6 +437,8 @@ public class NewsReaderController {
 		this.getData();
 	}
 
+	//DEV_TEAM_06
+	//Its password: 123006@3
 	/**
 	 * @param usr the usr to set
 	 */
