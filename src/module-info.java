@@ -5,11 +5,11 @@ module NewsManager {
 	requires com.jfoenix;
 	requires materialfx;
 	requires javafx.web;
-	requires java.json;
 	requires java.logging;
 	requires jdk.jsobject;
 	requires javafx.swing;
 	requires javafx.base;
+    requires org.glassfish.java.json;
 
     opens application to javafx.controls, javafx.graphics, javafx.fxml, com.jfoenix, materialfx;
 	exports application;
