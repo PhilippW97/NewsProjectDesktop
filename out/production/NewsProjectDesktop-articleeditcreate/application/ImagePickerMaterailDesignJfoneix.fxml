@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ImagePickerController">
+   <children>
+      <JFXTextField fx:id="idImageURL" focusColor="#56abff" labelFloat="true" layoutX="21.0" layoutY="33.0" prefHeight="35.0" prefWidth="255.0" promptText="File URL" unFocusColor="#a3abb2" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="33.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXButton fx:id="btnAccept" buttonType="RAISED" layoutX="14.0" layoutY="251.0" onAction="#onAccept" prefHeight="35.0" prefWidth="65.0" style="-fx-background-color: #8181F7;" text="Accept" textFill="#f2f2f2" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <ImageView fx:id="imgPreview" fitHeight="270.0" fitWidth="290.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="75.0" />
+      <JFXButton fx:id="btnFileDialog" buttonType="RAISED" layoutX="268.0" layoutY="43.0" onAction="#onFileDialog" style="-fx-background-color: #8181F7;" text="..." textFill="#f2f2f2" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="43.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnCancel" buttonType="RAISED" layoutX="218.0" layoutY="351.0" onAction="#onCancel" prefHeight="35.0" prefWidth="65.0" style="-fx-background-color: #8181F7;" text="Cancel" textFill="#f2f2f2" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnPreviw" buttonType="RAISED" layoutX="118.0" layoutY="351.0" onAction="#onImagePreview" prefHeight="35.0" style="-fx-background-color: #8181F7;" text="Preview" textFill="#f2f2f2" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="116.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

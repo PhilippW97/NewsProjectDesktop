@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package application.utils;
 
@@ -28,7 +28,7 @@ import javafx.scene.image.Image;
 
 /**
  * This class provide services for translate an article to JSon and viceversa
- * 
+ *
  * @author agonzalez
  *
  */
@@ -37,7 +37,7 @@ public class JsonArticle {
 
 	/**
 	 * Build a JsonObject for the given article
-	 * 
+	 *
 	 * @param article article to be transformed
 	 * @return json data
 	 */
@@ -54,11 +54,11 @@ public class JsonArticle {
 		buildJSon.add(keys.get("Subtitle"), data);
 		data = article.getBodyText();
 		data = (data == null) ? "" : data;
-		data = extractBody(data); 
+		data = extractBody(data);
 		buildJSon.add(keys.get("Body"), data);
 		data = article.getAbstractText();
 		data = (data == null) ? "" : data;
-		data = extractBody(data); 
+		data = extractBody(data);
 		buildJSon.add(keys.get("Abstract"), data);
 		Image image = article.getImageData();
 		// Converting image data into a String
@@ -85,7 +85,7 @@ public class JsonArticle {
 
 	/**
 	 * Create an article from a JsonObject
-	 * 
+	 *
 	 * @param articleData json data
 	 * @return the article
 	 * @throws ErrorMalFormedArticle an article was found without title or category
@@ -143,7 +143,7 @@ public class JsonArticle {
 	}
 
 	/**
-	 * Convert a image data given in an string into an BufferedImage 
+	 * Convert a image data given in an string into an BufferedImage
 	 * @param imageData String with image data
 	 * @return the corresponding image
 	 */
@@ -164,9 +164,9 @@ public class JsonArticle {
 	/**
 	 * This method load a file that contains json data into a jsonObject If file
 	 * can't be read this method return null
-	 * 
+	 *
 	 * @param fileName File to read
-	 * @return jsonObject 
+	 * @return jsonObject
 	 */
 	public static JsonObject readFile(String fileName) {
 		JsonObject result = null;
@@ -185,7 +185,7 @@ public class JsonArticle {
 	}
 
 	/**
-	 * this method transform an image into a String in order to attach it 
+	 * this method transform an image into a String in order to attach it
 	 * @param image to be converted
 	 * @return string corresponding to the given image
 	 */
@@ -206,7 +206,7 @@ public class JsonArticle {
 	/**
 	 * This method return body tag from html string. If there is'nt body the original
 	 * text is returned
-	 * 
+	 *
 	 * @param text html text in wich the body tag is looked for
 	 * @return return body tag from html string. If there is'nt body the original text is returned
 	 */

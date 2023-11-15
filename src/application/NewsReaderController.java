@@ -1,10 +1,11 @@
 /**
- * 
+ *
  */
 package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -22,8 +23,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
@@ -42,6 +43,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import serverConection.ConnectionManager;
+import serverConection.exceptions.AuthenticationError;
 
 /**
  * @author ÁngelLucas
@@ -54,7 +56,7 @@ public class NewsReaderController {
 	private boolean articleSelected=false;
 	private boolean loggedIn=false;
 	private Article currentArticle;
-	
+
 	private ObservableList<Article> allArticles;
 	@FXML
 	private ListView<Article> articleList;
@@ -78,17 +80,17 @@ public class NewsReaderController {
     private JFXButton articleNewButton;
     @FXML
     private Label userWelcomeLabel;
-    @FXML
-    private JFXButton loginButton; 
-    @FXML
-    private JFXButton logoutButton;
-    
-    
-    
+
+	@FXML
+	private JFXButton loginButton;
+	@FXML
+	private JFXButton logoutButton;
+
+
     private FilteredList<Article> filteredData;
-    
-    private ConnectionManager connection;
-    
+
+	private ConnectionManager connection;
+
 
 
 	public NewsReaderController() {
@@ -96,17 +98,17 @@ public class NewsReaderController {
 		//Uncomment next sentence to use data from server instead dummy data
 		//newsReaderModel.setDummyData(false);
 		//Get text Label
-		
+
 	}
 
-		
+
 
 	private void getData() {
 		//TODO retrieve data and update UI
-		//The method newsReaderModel.retrieveData() can be used to retrieve data  
+		//The method newsReaderModel.retrieveData() can be used to retrieve data
 		newsReaderModel.retrieveData();
 		this.allArticles=newsReaderModel.getArticles();
-		
+
 	}
 	private Predicate<Article> createCombinedFilter(String categoryText, String filterText) {
 	    return article -> {
@@ -120,43 +122,56 @@ public class NewsReaderController {
 	        return categoryFilterPass && textFilterPass;
 	    };
 	}
-	
-	public void updatePermissions() {
-		if(loggedIn) {
-			loginButton.setDisable(true);
-    	    loginButton.setVisible(false);
-    	    logoutButton.setDisable(false);
-    	    logoutButton.setVisible(true);
-			this.updateWelcomeLabel(usr.getLogin());
-		    articleNewButton.setDisable(false);
-		    articleNewButton.setVisible(true);
-		}
-		else {
-			logoutButton.setDisable(true);
-	    	logoutButton.setVisible(false);
-	    	loginButton.setDisable(false);
-	    	loginButton.setVisible(true);
-			this.updateWelcomeLabel("unknown user");
-		    articleNewButton.setDisable(true);
-		    articleNewButton.setVisible(false);
-		}
-	}
-	
-	
 	private void updateWelcomeLabel(String username) {
 		userWelcomeLabel.setText("Welcome, "+ username +"!");
 	}
 
+	public void updatePermissions() {
+		if(loggedIn) {
+		    articleNewButton.setDisable(false);
+		    articleNewButton.setVisible(true);
+			loginButton.setDisable(true);
+			loginButton.setVisible(false);
+			logoutButton.setDisable(false);
+			logoutButton.setVisible(true);
+			this.updateWelcomeLabel(usr.getLogin());
+
+
+		}
+		else {
+			logoutButton.setDisable(true);
+			logoutButton.setVisible(false);
+			loginButton.setDisable(false);
+			loginButton.setVisible(true);
+			this.updateWelcomeLabel("unknown user");
+			setUsr(new User("test",1));
+			articleNewButton.setDisable(true);
+			articleNewButton.setVisible(false);
+		}
+	}
+
+
 	@FXML
-    void initialize() {
+    void initialize() throws AuthenticationError {
+		//dummy user
+		usr=new User("testLogin",1);
+//
+//		Properties prop = Main.buildServerProperties();
+//		ConnectionManager connection = new ConnectionManager(prop);
+//		//Connecting as public (anonymous) for your group
+//		connection.setAnonymousAPIKey("ANON06_340"/*Put your group API Key here*/);
+//		//Login whitout login form:
+//		connection.login("DEV_TEAM_06", "123006@3"); //User: Reader2 and password "reader2"
+//		usr  = new User ("DEV_TEAM_06",
+//				Integer.parseInt(connection.getIdUser()));
+
+		userWelcomeLabel.setText("Not logged in!");
 		articleSelected=false;
 		getData();
-		logoutButton.setDisable(true);
 		articleEditButton.setDisable(true);
 	    articleDeleteButton.setDisable(true);
 	    articleDetailsButton.setDisable(true);
 	    articleNewButton.setDisable(true);
-	    logoutButton.setVisible(false);
 	    articleEditButton.setVisible(false);
 	    articleDeleteButton.setVisible(false);
 	    articleDetailsButton.setVisible(false);
@@ -166,7 +181,7 @@ public class NewsReaderController {
         assert articleSelectedLabel != null : "fx:id=\"articleSelected\" was not injected: check your FXML file 'FirstWindow.fxml'.";
         filteredData = new FilteredList<>(allArticles, article -> true);
         this.articleList.setItems(filteredData);
-        
+
         UnaryOperator<TextFormatter.Change> filterValidationFormatter = change -> {
         	if (change.isDeleted()) { //For deleted and replace (replace is a deleted operation with new text)
         		if (!change.getText().matches("[a-zA-ZÁ-ÿ0-9 ]+")) { //If is replace operation and text is not a character
@@ -202,7 +217,7 @@ public class NewsReaderController {
 				webEngine.loadContent(currentArticle.getAbstractText(),"text/html");
 				// Image
 				imageViewer.setImage(currentArticle.getImageData());
-				System.out.println("current user id: "+usr.getIdUser()+" user id of article "+newArticle.getIdUser());
+				//System.out.println("current user id: "+usr.getIdUser()+" user id of article "+newArticle.getIdUser());
 				// Handle button access ability based on permissions
 				articleDetailsButton.setDisable(false);
 				articleDetailsButton.setVisible(true);
@@ -217,10 +232,10 @@ public class NewsReaderController {
 					articleDeleteButton.setVisible(true);
 					if(usr.getIdUser()==currentArticle.getIdUser()) {
 						articleEditButton.setDisable(false);
-						articleDeleteButton.setDisable(false);						
+						articleDeleteButton.setDisable(false);
 					}
 				}
-				
+
 			}
 			else { //Nothing selected
 				articleSelectedLabel.setText("");
@@ -229,10 +244,10 @@ public class NewsReaderController {
 			    imageViewer.setImage(null);
 			}
 		}
-    
+
      });
     }
-	
+
 	@FXML
 	public void handleCategorySelection(ActionEvent event) {
 	    MenuItem selectedCategory = (MenuItem) event.getTarget();
@@ -245,7 +260,7 @@ public class NewsReaderController {
 	    // Update the filter with the combined predicate
 	    filteredData.setPredicate(createCombinedFilter(categoryText, filterText));
 	}
-	
+
 	public void loadNewWindow(ActionEvent event, String fxmlFilename,String title) {
     	Window parentWindow = ((Node) event.getSource()).getScene().getWindow();
     	Pane root;
@@ -256,23 +271,30 @@ public class NewsReaderController {
 				ArticleDetailsController controller = loader.<ArticleDetailsController>getController();
 	            if (currentArticle != null) {
 	                controller.setArticle(currentArticle);
+					controller.setUsr(usr);
+					System.out.println(currentArticle.getBodyText());
 	            }
 			}
 			// Article Edit and Create are handled in the same controller
 			else if(fxmlFilename.equals("ArticleEdit.fxml")) {
 				ArticleEditController controller = loader.<ArticleEditController>getController();
-				System.out.println("subtitle: "+currentArticle.getSubtitle());
+				//System.out.println("subtitle: "+currentArticle.getSubtitle());
 				if(title.equals("Article Edit")) {
 		            if (currentArticle != null) {
-		                controller.setArticle(currentArticle);
+						ArticleEditController controller1 = loader.<ArticleEditController>getController();
+		                controller1.setArticle(currentArticle);
+						controller.setUsr(usr);
+						controller.setConnectionMannager(newsReaderModel.getConnectionManager());
 		            }
 				}
 				// don't send article when you create a new one
 				else if(title.equals("Article Create")) {
-					controller.setArticle(null);
+					controller.setArticle(new Article());
+					controller.setUsr(usr);
+					controller.setConnectionMannager(newsReaderModel.getConnectionManager());
 				}
 			}
-            
+
 			Scene nextScene = new Scene(root);
 			Stage nextWindow = new Stage();
 		 	nextWindow.initStyle(StageStyle.DECORATED);
@@ -283,20 +305,20 @@ public class NewsReaderController {
             // Specifies the owner Window (parent) for new window
             nextWindow.initOwner(parentWindow);
             nextWindow.show();
-           
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	public void viewArticle(ActionEvent event) {
 		if(articleSelected) {
 			loadNewWindow(event, "ArticleDetails.fxml","Article Dedtails");
 		}
 	}
-	
+
 	@FXML
 	public void editArticle(ActionEvent event) {
 		loadNewWindow(event,"ArticleEdit.fxml","Article Edit");
@@ -315,13 +337,13 @@ public class NewsReaderController {
 	@FXML
 	public void loadArticleFromFile(ActionEvent event) {
 		Window parentWindow = ((Node) event.getSource()).getScene().getWindow();
-		ExtensionFilter ex1 = new ExtensionFilter("Text Files", "*.txt");
+		ExtensionFilter ex1 = new ExtensionFilter("Text Files", "*.news");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(ex1);
 		fileChooser.setTitle("Choose Article File");
-		
+
 		//fileChooser.setInitialDirectory(new File("C:/Files"));
-		
+
 		File selectedFile = fileChooser.showOpenDialog(parentWindow);
 		if (selectedFile != null) {
 			System.out.println("Open File");
@@ -331,55 +353,59 @@ public class NewsReaderController {
 				Article loadedArticle= JsonArticle.jsonToArticle(JsonArticle.readFile(selectedFile.getPath()));
 				currentArticle=loadedArticle;
 				editArticle(event);
-				
+
 			} catch (ErrorMalFormedArticle e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
-		
+
+
 	}
 	@FXML
 	public void handleLogin(ActionEvent event) throws IOException {
-    	Scene parentScene = ((Node) event.getSource()).getScene();
-        Stage stage = new Stage();
+		Scene parentScene = ((Node) event.getSource()).getScene();
+		Stage stage = new Stage();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-        Parent root = loader.load();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+		Parent root = loader.load();
 
-        LoginController loginController = loader.getController();
-        loginController.setConnectionManager(this.connection);
+		LoginController loginController = loader.getController();
+		loginController.setConnectionManager(this.connection);
 
-        stage.initOwner(parentScene.getWindow());
-        stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(parentScene.getWindow());
+		stage.initModality(Modality.WINDOW_MODAL);
 
         /*stage.setOnCloseRequest(ev -> {
             //loginController.exitForm(ev);
         });*/
 
-        Scene secondScene = new Scene(root);
-        stage.setScene(secondScene);
+		Scene secondScene = new Scene(root);
+		stage.setScene(secondScene);
 
-        stage.showAndWait();
-        
-        this.setUsr(loginController.getLoggedUsr());
-        
-        if (this.getUsr() != null) {
-        	this.loggedIn = true;
-        }
-        
-        updatePermissions();
+		stage.showAndWait();
+
+		this.setUsr(loginController.getLoggedUsr());
+
+		if (this.getUsr() != null) {
+			this.loggedIn = true;
+		}
+
+		updatePermissions();
+
 	}
-	
+
 	@FXML
-	public void handleLogout(ActionEvent event) throws IOException {     
+	public void handleLogout(ActionEvent event) throws IOException {
 		this.loggedIn = false;
 		this.setUsr(null);
-        
-        updatePermissions();
+
+		updatePermissions();
 	}
 
+	public void setLoggedIn(boolean loggedIn){
+		this.loggedIn=loggedIn;
+	}
 	@FXML
 	void onNewChar(KeyEvent event) {
 	    // Get the text associated with the key pressed
@@ -392,7 +418,7 @@ public class NewsReaderController {
 	    filteredData.setPredicate(createCombinedFilter(categoryText, filterText));
 	}
 
-	
+
 
 	/**
 	 * @return the usr
@@ -405,44 +431,21 @@ public class NewsReaderController {
 		this.connection = connection;
 		this.newsReaderModel.setDummyData(false); //System is connected so dummy data are not needed
 		this.newsReaderModel.setConnectionManager(connection);
-		//this.loginModel.setConnectionManager(connection);
 		this.getData();
 	}
-	
+
 	/**
 	 * @param usr the usr to set
 	 */
 	void setUsr(User usr) {
-		
+
 		this.usr = usr;
 		//Reload articles
 		this.getData();
 		//TODO Update UI
+		//userWelcomeLabel.setText("welcome: "+usr.getLogin());
+
 	}
-	
-	void onNext(ActionEvent event) throws IOException {
-    	//Scene where event was generated 
-    	Scene parentScene = ((Node) event.getSource()).getScene();
-
-        Stage stage = new Stage();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-        Parent root = loader.load();
-
-        stage.initOwner(parentScene.getWindow());
-
-        stage.initModality(Modality.WINDOW_MODAL);
-
-        stage.setOnCloseRequest(ev -> {
-            //loginController.exitForm(ev);
-        });
-
-        Scene secondScene = new Scene(root);
-        stage.setScene(secondScene);
-
-        stage.showAndWait();
-
-    }
 
 
 }

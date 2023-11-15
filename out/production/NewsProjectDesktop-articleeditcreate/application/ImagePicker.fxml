@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ImagePickerController">
+   <children>
+      <TextField fx:id="idImageURL" layoutX="21.0" layoutY="33.0" prefHeight="35.0" prefWidth="255.0" promptText="Image URL" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="33.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField> 
+      <Button fx:id="btnAccept" layoutX="14.0" layoutY="251.0" onAction="#onAccept" prefHeight="35.0" prefWidth="65.0" style="-fx-background-color: #8181F7;" text="Accept" textFill="#f2f2f2" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <ImageView fx:id="imgPreview" fitHeight="270.0" fitWidth="290.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="75.0" />
+      <Button fx:id="btnFileDialog" layoutX="268.0" layoutY="43.0" onAction="#onFileDialog" style="-fx-background-color: #8181F7;" text="..." textFill="#f2f2f2" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="43.0" />
+      <Button fx:id="btnCancel" layoutX="218.0" layoutY="351.0" onAction="#onCancel" prefHeight="35.0" prefWidth="65.0" style="-fx-background-color: #8181F7;" text="Cancel" textFill="#f2f2f2" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="btnPreviw" layoutX="118.0" layoutY="351.0" onAction="#onImagePreview" prefHeight="35.0" style="-fx-background-color: #8181F7;" text="Preview" textFill="#f2f2f2" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="116.0">
+         <font>
+            <Font size="14.0" />
+         </font></Button> 
+   </children>
+</AnchorPane>

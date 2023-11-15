@@ -55,8 +55,9 @@
          </font></JFXButton>
       <JFXButton fx:id="fileLoadButton" layoutX="242.0" layoutY="28.0" onAction="#loadArticleFromFile" prefHeight="39.0" prefWidth="152.0" style="-fx-background-color: blue;" text="Load Article from File" />
       <JFXButton fx:id="articleNewButton" layoutX="422.0" layoutY="28.0" onAction="#createArticle" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: blue;" text="New Article" />
-      <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="24.0" layoutY="28.0" onAction="#handleLogin" prefHeight="39.0" prefWidth="68.0" style="-fx-background-color: blue;" text="Login" />
-      <JFXButton fx:id="logoutButton" buttonType="RAISED" layoutX="24.0" layoutY="28.0" onAction="#handleLogout" prefHeight="39.0" prefWidth="68.0" style="-fx-background-color: blue;" text="Logout" />
+       <JFXButton fx:id="logoutButton" buttonType="RAISED" layoutX="24.0" layoutY="28.0" onAction="#handleLogout" prefHeight="39.0" prefWidth="68.0" style="-fx-background-color: blue;" text="Logout" />
+
+       <JFXButton fx:id="loginButton" buttonType="RAISED" layoutX="24.0" layoutY="28.0" onAction="#handleLogin" prefHeight="39.0" prefWidth="68.0" style="-fx-background-color: blue;" text="Login" />
       <Label fx:id="userWelcomeLabel" layoutX="14.0" layoutY="82.0" prefHeight="18.0" prefWidth="239.0" text="Welcome, unknown user!">
          <font>
             <Font name="Arial" size="14.0" />

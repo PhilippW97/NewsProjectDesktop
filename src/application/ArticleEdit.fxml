@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane prefHeight="420.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ArticleEditController">
-
+<AnchorPane prefHeight="613.0" prefWidth="736.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ArticleEditController">
+    <children>
+        <Label layoutX="286.0" layoutY="58.0" text="Title:" />
+        <Label layoutX="286.0" layoutY="130.0" text="Subtitle:" />
+        <TextField fx:id="Title" layoutX="364.0" layoutY="53.0" />
+        <TextField fx:id="Subtitle" layoutX="364.0" layoutY="125.0" />
+        <TextArea fx:id="body" layoutX="42.0" layoutY="291.0" prefHeight="200.0" prefWidth="652.0" />
+        <Button fx:id="back" layoutX="33.0" layoutY="549.0" mnemonicParsing="false" onAction="#onBack" text="Back" />
+        <Button fx:id="Send_and_Back" layoutX="150.0" layoutY="549.0" mnemonicParsing="false" onMouseClicked="#Send_and_Back" text="Send&amp;Back" />
+        <Button fx:id="Save_to_file" layoutX="286.0" layoutY="549.0" mnemonicParsing="false" onMouseClicked="#Save_to_File" text="Save to file" />
+        <Button fx:id="Text_or_html" layoutX="455.0" layoutY="549.0" onAction="#html_or_text" mnemonicParsing="false" text="Text/html" />
+        <Button fx:id="Abstract_or_Body" layoutX="592.0" layoutY="549.0" mnemonicParsing="false" onAction="#Abstract_or_Body" text="Abstract/Body" />
+        <ChoiceBox fx:id="category" layoutX="368.0" layoutY="213.0" prefWidth="150.0" />
+        <Label layoutX="284.0" layoutY="218.0" text="category:" />
+      <ImageView fx:id="image" fitHeight="213.0" fitWidth="200.0" layoutX="33.0" layoutY="38.0" onMouseClicked="#onImageClicked" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="Abstract_Body" layoutX="42.0" layoutY="267.0" text="Abstract" />
+      <Label fx:id="Type" layoutX="592.0" layoutY="491.0" text="Type:" />
+    </children>
 </AnchorPane>
