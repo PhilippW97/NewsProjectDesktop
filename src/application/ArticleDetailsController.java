@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 /**
- * @author ÁngelLucas
+ * @author Philipp Walter, 230857
  *
  */
 public class ArticleDetailsController {

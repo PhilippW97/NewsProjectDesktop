@@ -46,7 +46,7 @@ import serverConection.ConnectionManager;
 import serverConection.exceptions.AuthenticationError;
 
 /**
- * @author ÁngelLucas
+ * @author Wohlfart, Phillip, 230840
  *
  */
 public class NewsReaderController {

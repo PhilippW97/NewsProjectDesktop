@@ -31,7 +31,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 
-
+/**
+ * @author Guilherme Garrido
+ *
+ */
 public class LoginController {
 	//TODO Add all attribute and methods as needed
 	private LoginModel loginModel = new LoginModel();

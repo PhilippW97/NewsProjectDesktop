@@ -41,7 +41,7 @@ import serverConection.exceptions.AuthenticationError;
 import serverConection.exceptions.ServerCommunicationError;
 
 /**
- * @author ÁngelLucas
+ * @author Jiaqi, Deng, 233412
  *
  */
 public class ArticleEditController {
