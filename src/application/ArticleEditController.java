@@ -32,6 +32,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -67,9 +69,6 @@ public class ArticleEditController {
 	private TextField Subtitle;
 
 	@FXML
-	private TextArea body;
-
-	@FXML
 	private ImageView image;
 
 	@FXML
@@ -92,6 +91,9 @@ public class ArticleEditController {
 
 	@FXML
 	private Label Abstract_Body;
+
+	@FXML
+	private WebView body;
 
 	@FXML
 	private Label Type;
@@ -181,9 +183,9 @@ public class ArticleEditController {
 		article.setImageData(image.getImage());
 		article.setSubtitle(Subtitle.getText());
 		if(Abstract_Body.getText().equals("Body")){
-			article.setBodyText(body.getText());
+			article.setBodyText(body.getAccessibleText());
 		}else {
-			article.setAbstractText(body.getText());
+			article.setAbstractText(body.getAccessibleText());
 		}
 
 		article.setIdUser(usr.getIdUser());
@@ -205,24 +207,29 @@ public class ArticleEditController {
 
 	@FXML
 	void Abstract_or_Body(){
-		if(Abstract_Body.getText().equals("Abstract")){
-			article.setAbstractText(body.getText());
-			body.clear();
-			body.setText(article.getBodyText());
-			Abstract_Body.setText("Body");
-		}else if(Abstract_Body.getText().equals("Body")){
-			article.setBodyText(body.getText());
-			body.clear();
-			body.setText(article.getAbstractText());
-			Abstract_Body.setText("Abstract");
-		}
+		System.out.println(this.article);
+//		if(Abstract_Body.getText().equals("Abstract")){
+//			article.setAbstractText(body.getText());
+//			body.clear();
+//			body.setText(article.getBodyText());
+//			Abstract_Body.setText("Body");
+//		}else if(Abstract_Body.getText().equals("Body")){
+//			article.setBodyText(body.getText());
+//			body.clear();
+//			body.setText(article.getAbstractText());
+//			Abstract_Body.setText("Abstract");
+//		}
 	}
 
 	@FXML
 	void html_or_text(){
 		if(Type.getText().equals("Type:Html")){
+			WebEngine webEngine = body.getEngine();
+			webEngine.loadContent(body.getAccessibleText(), "text/html");
 			Type.setText("Type:Txt");
 		}else if(Type.getText().equals("Type:Txt")){
+			WebEngine webEngine = body.getEngine();
+			webEngine.loadContent(body.getAccessibleText(), "text/plain");
 			Type.setText("Type:Html");
 		}
 	}
@@ -235,9 +242,9 @@ public class ArticleEditController {
 		article.setImageData(image.getImage());
 		article.setSubtitle(Subtitle.getText());
 		if(Abstract_Body.getText().equals("Body")){
-			article.setBodyText(body.getText());
+			article.setBodyText(body.getAccessibleText());
 		}else {
-			article.setAbstractText(body.getText());
+			article.setAbstractText(body.getAccessibleText());
 		}
 		article.setIdUser(usr.getIdUser());
 		setArticle(article);
@@ -282,9 +289,9 @@ public class ArticleEditController {
 	void setArticle(Article article) {
 		this.editingArticle = (article != null) ? new ArticleEditModel(article) : new ArticleEditModel(usr);
 		if(article!=null&&article.getTitle()!=null) {
+			this.article=article;
 			Title.setText(article.getTitle());
-			body.setText(article.getAbstractText());
-			body.setWrapText(true);
+			body.setAccessibleText(article.getAbstractText());
 			category.getSelectionModel().select(Categories.valueOf(article.getCategory().toUpperCase(Locale.ENGLISH)));
 			image.setImage(article.getImageData());
 			Subtitle.setText(article.getSubtitle());

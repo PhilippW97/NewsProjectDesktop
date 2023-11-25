@@ -271,9 +271,10 @@ public class NewsReaderController {
 			if(fxmlFilename.equals("ArticleDetails.fxml")){
 				ArticleDetailsController controller = loader.<ArticleDetailsController>getController();
 	            if (currentArticle != null) {
-	                controller.setArticle(currentArticle);
+	            	Article fullArticle= newsReaderModel.getFullArticle(currentArticle.getIdArticle());
+	                controller.setArticle(fullArticle);
+	                System.out.println("BODY: "+fullArticle.getBodyText());
 					controller.setUsr(usr);
-					System.out.println(currentArticle.getBodyText());
 	            }
 			}
 			// Article Edit and Create are handled in the same controller
@@ -283,7 +284,10 @@ public class NewsReaderController {
 				if(title.equals("Article Edit")) {
 		            if (currentArticle != null) {
 						ArticleEditController controller1 = loader.<ArticleEditController>getController();
-		                controller1.setArticle(currentArticle);
+						Article fullArticle= newsReaderModel.getFullArticle(currentArticle.getIdArticle());
+						System.out.println("ID: "+currentArticle.getIdArticle());
+		                controller1.setArticle(fullArticle);
+		                System.out.println("BODY: "+fullArticle.getBodyText());
 						controller1.setUsr(usr);
 						controller1.setConnectionMannager(newsReaderModel.getConnectionManager());
 						controller1.setNewsReaderController(this);
