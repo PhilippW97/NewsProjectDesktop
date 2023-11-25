@@ -72,21 +72,6 @@ public class ArticleEditController {
 	private ImageView image;
 
 	@FXML
-	private Button back;
-
-	@FXML
-	private Button Send_and_Back;
-
-	@FXML
-	private Button Save_to_file;
-
-	@FXML
-	private Button Text_or_html;
-
-	@FXML
-	private Button Abstract_or_Body;
-
-	@FXML
 	private ChoiceBox<Categories> category;
 
 	@FXML
@@ -150,8 +135,6 @@ public class ArticleEditController {
 			alert.showAndWait();
 			return false;
 		}
-//TODO prepare and send using connection.saveArticle( ...)
-
 		return true;
 	}
 
@@ -171,8 +154,6 @@ public class ArticleEditController {
 	 */
 	void setUsr(User usr) {
 		this.usr = usr;
-		//TODO Update UI and controls
-
 	}
 
 
@@ -183,11 +164,8 @@ public class ArticleEditController {
 		article.setCategory(category.getValue().toString());
 		article.setImageData(image.getImage());
 		article.setSubtitle(Subtitle.getText());
-		if(Abstract_Body.getText().equals("Body")){
-			article.setBodyText(body.getAccessibleText());
-		}else {
-			article.setAbstractText(body.getAccessibleText());
-		}
+		article.setBodyText(body.getAccessibleText());
+		article.setAbstractText(body.getAccessibleText());
 
 		article.setIdUser(usr.getIdUser());
 		setArticle(article);
@@ -209,12 +187,14 @@ public class ArticleEditController {
 	@FXML
 	void Abstract_or_Body(){
 		WebEngine webEngine = body.getEngine();
-		if(!isAbstract){
+		if(isAbstract){
 			webEngine.loadContent(article.getBodyText());
 			Abstract_Body.setText("Body");
+			article.setBodyText(body.getAccessibleText());
 		}else if(Abstract_Body.getText().equals("Body")){
 			webEngine.loadContent(article.getAbstractText());
 			Abstract_Body.setText("Abstract");
+			article.setAbstractText(body.getAccessibleText());
 		}
 		isAbstract = !isAbstract;
 	}
@@ -225,19 +205,27 @@ public class ArticleEditController {
 		if(Type.getText().equals("Type:Html") && isAbstract){
 			webEngine.loadContent(article.getAbstractText(), "text/html");
 			Type.setText("Type:Txt");
-		}else if(Type.getText().equals("Type:Txt") && isAbstract){
-			webEngine.loadContent(article.getAbstractText(), "text/plain");
-			Type.setText("Type:Html");
-		}
-		else if(Type.getText().equals("Type:Html") && !isAbstract){
+		}else if(Type.getText().equals("Type:Html") && !isAbstract){
 			webEngine.loadContent(article.getBodyText(), "text/html");
 			Type.setText("Type:Txt");
+		}
+		else if(Type.getText().equals("Type:Txt") && isAbstract){
+			webEngine.loadContent(article.getAbstractText(), "text/plain");
+			Type.setText("Type:Html");
 		}
 		else if(Type.getText().equals("Type:Txt") && !isAbstract){
 			webEngine.loadContent(article.getBodyText(), "text/plain");
 			Type.setText("Type:Html");
 		}
 	}
+
+//		if(Type.getText().equals("Type:Html")){
+//		body.setAccessibleText(body.getAccessibleText(), "text/html");
+//		Type.setText("Type:Txt");
+//	}else if(Type.getText().equals("Type:Txt")){
+//		body.setAccessibleText(body.getAccessibleText(), "text/plain");
+//		Type.setText("Type:Txt");
+//	}
 
 
 	@FXML
@@ -246,10 +234,11 @@ public class ArticleEditController {
 		article.setCategory(category.getValue().toString());
 		article.setImageData(image.getImage());
 		article.setSubtitle(Subtitle.getText());
-		if(Abstract_Body.getText().equals("Body")){
-			article.setBodyText(body.getAccessibleText());
-		}else {
+		if(isAbstract) {
 			article.setAbstractText(body.getAccessibleText());
+		}
+		else{
+			article.setBodyText(body.getAccessibleText());
 		}
 		article.setIdUser(usr.getIdUser());
 		setArticle(article);
@@ -270,7 +259,6 @@ public class ArticleEditController {
 			Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
 			alert.showAndWait();
 		}
-
 	}
 
 	/**
@@ -302,10 +290,6 @@ public class ArticleEditController {
 			image.setImage(article.getImageData());
 			Subtitle.setText(article.getSubtitle());
 		}
-
-
-
-		//TODO update UI
 	}
 
 	@FXML
