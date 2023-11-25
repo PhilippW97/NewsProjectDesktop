@@ -100,6 +100,7 @@ public class ArticleEditController {
 	Article article;
 
 	NewsReaderController newsReaderController;
+	Boolean isAbstract = true;
 
 	public void setNewsReaderController(NewsReaderController newsReaderController) {
 		this.newsReaderController = newsReaderController;
@@ -207,29 +208,33 @@ public class ArticleEditController {
 
 	@FXML
 	void Abstract_or_Body(){
-		System.out.println(this.article);
-//		if(Abstract_Body.getText().equals("Abstract")){
-//			article.setAbstractText(body.getText());
-//			body.clear();
-//			body.setText(article.getBodyText());
-//			Abstract_Body.setText("Body");
-//		}else if(Abstract_Body.getText().equals("Body")){
-//			article.setBodyText(body.getText());
-//			body.clear();
-//			body.setText(article.getAbstractText());
-//			Abstract_Body.setText("Abstract");
-//		}
+		WebEngine webEngine = body.getEngine();
+		if(!isAbstract){
+			webEngine.loadContent(article.getBodyText());
+			Abstract_Body.setText("Body");
+		}else if(Abstract_Body.getText().equals("Body")){
+			webEngine.loadContent(article.getAbstractText());
+			Abstract_Body.setText("Abstract");
+		}
+		isAbstract = !isAbstract;
 	}
 
 	@FXML
 	void html_or_text(){
-		if(Type.getText().equals("Type:Html")){
-			WebEngine webEngine = body.getEngine();
-			webEngine.loadContent(body.getAccessibleText(), "text/html");
+		WebEngine webEngine = body.getEngine();
+		if(Type.getText().equals("Type:Html") && isAbstract){
+			webEngine.loadContent(article.getAbstractText(), "text/html");
 			Type.setText("Type:Txt");
-		}else if(Type.getText().equals("Type:Txt")){
-			WebEngine webEngine = body.getEngine();
-			webEngine.loadContent(body.getAccessibleText(), "text/plain");
+		}else if(Type.getText().equals("Type:Txt") && isAbstract){
+			webEngine.loadContent(article.getAbstractText(), "text/plain");
+			Type.setText("Type:Html");
+		}
+		else if(Type.getText().equals("Type:Html") && !isAbstract){
+			webEngine.loadContent(article.getBodyText(), "text/html");
+			Type.setText("Type:Txt");
+		}
+		else if(Type.getText().equals("Type:Txt") && !isAbstract){
+			webEngine.loadContent(article.getBodyText(), "text/plain");
 			Type.setText("Type:Html");
 		}
 	}
@@ -291,7 +296,8 @@ public class ArticleEditController {
 		if(article!=null&&article.getTitle()!=null) {
 			this.article=article;
 			Title.setText(article.getTitle());
-			body.setAccessibleText(article.getAbstractText());
+			WebEngine webEngine = body.getEngine();
+			webEngine.loadContent(article.getAbstractText());
 			category.getSelectionModel().select(Categories.valueOf(article.getCategory().toUpperCase(Locale.ENGLISH)));
 			image.setImage(article.getImageData());
 			Subtitle.setText(article.getSubtitle());
