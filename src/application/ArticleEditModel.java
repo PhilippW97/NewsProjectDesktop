@@ -27,6 +27,9 @@ class ArticleEditModel {
 	 */
 	private Article edited;
 
+	private Boolean isAbstract = true;
+	private Boolean isHtml = true;
+
 	/**
 	 * It is a flag used to indicate that exists updates for the article
 	 * - False: unmodified
@@ -53,9 +56,39 @@ class ArticleEditModel {
 		if (usr!=null) {
 			original.setIdUser(usr.getIdUser());
 		}
-			
+
 		edited = new Article (original);
 		addedChangeListener();
+	}
+
+	/**
+	 * Toggle between abstract and body
+	 */
+	public void toggleAbstract() {
+		isAbstract = !isAbstract;
+	}
+
+	/**
+	 * Check if the current content is abstract
+	 * @return true if the content is abstract, false otherwise
+	 */
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	/**
+	 * Toggle between HTML and plain text
+	 */
+	public void toggleHtml() {
+		isHtml = !isHtml;
+	}
+
+	/**
+	 * Check if the current content is HTML
+	 * @return true if the content is HTML, false otherwise
+	 */
+	public boolean isHtml() {
+		return isHtml;
 	}
 
 	//Getters and setters

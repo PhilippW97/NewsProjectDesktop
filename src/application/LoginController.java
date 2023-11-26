@@ -78,6 +78,8 @@ public class LoginController {
 
 	@FXML
 	public void onLogin(ActionEvent event) {
+		usernameBox.setText("DEV_TEAM_06");
+		passwordBox.setText("123006@3");
 		String username = usernameBox.getText();
 		String password = passwordBox.getText();
 

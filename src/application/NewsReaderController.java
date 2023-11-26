@@ -289,7 +289,7 @@ public class NewsReaderController {
 		                controller1.setArticle(fullArticle);
 		                System.out.println("BODY: "+fullArticle.getBodyText());
 						controller1.setUsr(usr);
-						controller1.setConnectionMannager(newsReaderModel.getConnectionManager());
+						controller1.setConnectionManager(newsReaderModel.getConnectionManager());
 						controller1.setNewsReaderController(this);
 		            }
 				}
@@ -297,7 +297,7 @@ public class NewsReaderController {
 				else if(title.equals("Article Create")) {
 					controller.setArticle(new Article());
 					controller.setUsr(usr);
-					controller.setConnectionMannager(newsReaderModel.getConnectionManager());
+					controller.setConnectionManager(newsReaderModel.getConnectionManager());
 					controller.setNewsReaderController(this);
 				}
 			}

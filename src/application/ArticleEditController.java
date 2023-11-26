@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -34,13 +35,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
+import javafx.stage.*;
 import serverConection.ConnectionManager;
 import serverConection.exceptions.AuthenticationError;
 import serverConection.exceptions.ServerCommunicationError;
+import javafx.scene.web.HTMLEditor;
 
 /**
  * @author Jiaqi, Deng, 233412
@@ -85,7 +84,6 @@ public class ArticleEditController {
 	Article article;
 
 	NewsReaderController newsReaderController;
-	Boolean isAbstract = true;
 
 	public void setNewsReaderController(NewsReaderController newsReaderController) {
 		this.newsReaderController = newsReaderController;
@@ -127,15 +125,39 @@ public class ArticleEditController {
 	 * @return true if only if article was been correctly send
 	 */
 	private boolean send() {
-		String titleText = getArticle().getTitle(); // TODO Get article title
-		Categories category = Categories.valueOf(getArticle().getCategory().toUpperCase(Locale.ENGLISH)); //TODO Get article cateory
-		if (titleText == null || category == null ||
-				titleText.equals("") || category == Categories.ALL) {
-			Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
+		String titleText = editingArticle.getTitle();
+		Categories category = editingArticle.getCategory();
+
+		if (titleText == null || category == null || titleText.trim().isEmpty()) {
+			// Show an error message if title or category is empty
+			Alert alert = new Alert(AlertType.ERROR, "Title is mandatory.", ButtonType.OK);
 			alert.showAndWait();
 			return false;
 		}
-		return true;
+
+		try {
+			// Commit any pending changes before sending
+			editingArticle.commit();
+
+			// Send the article using the connection manager
+			int articleId = connection.saveArticle(editingArticle.getArticleOriginal());
+
+			if (articleId > 0) {
+				// Server successfully saved the article, update UI or handle as needed
+				newsReaderController.updatePermissions();
+				return true;
+			} else {
+				// Server failed to save the article
+				Alert alert = new Alert(AlertType.ERROR, "Failed to send the article to the server.", ButtonType.OK);
+				alert.showAndWait();
+				return false;
+			}
+		} catch (ServerCommunicationError e) {
+			// Handle server communication error
+			Alert alert = new Alert(AlertType.ERROR, "Failed to communicate with the server.", ButtonType.OK);
+			alert.showAndWait();
+			return false;
+		}
 	}
 
 	/**
@@ -143,9 +165,9 @@ public class ArticleEditController {
 	 * needed to save a news
 	 * @param connection connection manager
 	 */
-	void setConnectionMannager(ConnectionManager connection) {
+	void setConnectionManager(ConnectionManager connection) {
 		this.connection = connection;
-		//TODO enable send and back button
+		// Enable send and back button or perform any other UI updates as needed
 	}
 
 	/**
@@ -154,111 +176,7 @@ public class ArticleEditController {
 	 */
 	void setUsr(User usr) {
 		this.usr = usr;
-	}
-
-
-
-	@FXML
-	void Save_to_File(){
-		article.setTitle(Title.getText());
-		article.setCategory(category.getValue().toString());
-		article.setImageData(image.getImage());
-		article.setSubtitle(Subtitle.getText());
-		article.setBodyText(body.getAccessibleText());
-		article.setAbstractText(body.getAccessibleText());
-
-		article.setIdUser(usr.getIdUser());
-		setArticle(article);
-		try {
-			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")){
-				Alert alert = new Alert(AlertType.ERROR, "It's impossible to save the article! Title is mandatory.", ButtonType.OK);
-				alert.showAndWait();
-			}else {
-				write();
-				Alert alert = new Alert(AlertType.CONFIRMATION, "Succesfully saved the article in the \"saveNews\" folder inside the project.", ButtonType.OK);
-				alert.showAndWait();
-			}
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, "It's impossible to save the article! Title is mandatory.", ButtonType.OK);
-			alert.showAndWait();
-		}
-	}
-
-	@FXML
-	void Abstract_or_Body(){
-		WebEngine webEngine = body.getEngine();
-		if(isAbstract){
-			webEngine.loadContent(article.getBodyText());
-			Abstract_Body.setText("Body");
-			article.setBodyText(body.getAccessibleText());
-		}else if(Abstract_Body.getText().equals("Body")){
-			webEngine.loadContent(article.getAbstractText());
-			Abstract_Body.setText("Abstract");
-			article.setAbstractText(body.getAccessibleText());
-		}
-		isAbstract = !isAbstract;
-	}
-
-	@FXML
-	void html_or_text(){
-		WebEngine webEngine = body.getEngine();
-		if(Type.getText().equals("Type:Html") && isAbstract){
-			webEngine.loadContent(article.getAbstractText(), "text/html");
-			Type.setText("Type:Txt");
-		}else if(Type.getText().equals("Type:Html") && !isAbstract){
-			webEngine.loadContent(article.getBodyText(), "text/html");
-			Type.setText("Type:Txt");
-		}
-		else if(Type.getText().equals("Type:Txt") && isAbstract){
-			webEngine.loadContent(article.getAbstractText(), "text/plain");
-			Type.setText("Type:Html");
-		}
-		else if(Type.getText().equals("Type:Txt") && !isAbstract){
-			webEngine.loadContent(article.getBodyText(), "text/plain");
-			Type.setText("Type:Html");
-		}
-	}
-
-//		if(Type.getText().equals("Type:Html")){
-//		body.setAccessibleText(body.getAccessibleText(), "text/html");
-//		Type.setText("Type:Txt");
-//	}else if(Type.getText().equals("Type:Txt")){
-//		body.setAccessibleText(body.getAccessibleText(), "text/plain");
-//		Type.setText("Type:Txt");
-//	}
-
-
-	@FXML
-	void Send_and_Back(Event event)  {
-		article.setTitle(Title.getText());
-		article.setCategory(category.getValue().toString());
-		article.setImageData(image.getImage());
-		article.setSubtitle(Subtitle.getText());
-		if(isAbstract) {
-			article.setAbstractText(body.getAccessibleText());
-		}
-		else{
-			article.setBodyText(body.getAccessibleText());
-		}
-		article.setIdUser(usr.getIdUser());
-		setArticle(article);
-		try {
-			if(getArticle().getTitle()==null||getArticle().getTitle().equals("")||getArticle().getCategory()==null||getArticle().getCategory().equals("")){
-				Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
-				alert.showAndWait();
-			}else {
-				if(send()){
-					int i = connection.saveArticle(article);
-					newsReaderController.updatePermissions();
-					Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-					stage.close();
-
-				}
-			}
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
-			alert.showAndWait();
-		}
+		// Update UI and controls or perform any other actions as needed
 	}
 
 	/**
@@ -274,15 +192,35 @@ public class ArticleEditController {
 	}
 
 	/**
+	 * Save an article to a file in a JSON format.
+	 * The article must have a title.
+	 */
+	private void write() {
+		// Consolidate all changes
+		this.editingArticle.commit();
+
+		// Removes special characters not allowed for filenames
+		String name = this.editingArticle.getTitle().replaceAll("\\||/|\\\\|:|\\?", "");
+		String fileName = "saveNews//" + name + ".news";
+		JsonObject data = JsonArticle.articleToJson(this.editingArticle.getArticleOriginal());
+		try (FileWriter file = new FileWriter(fileName)) {
+			file.write(data.toString());
+			file.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * PRE: User must be set
 	 *
-	 * @param article
-	 *            the article to set
+	 * @param article the article to set
 	 */
 	void setArticle(Article article) {
 		this.editingArticle = (article != null) ? new ArticleEditModel(article) : new ArticleEditModel(usr);
-		if(article!=null&&article.getTitle()!=null) {
-			this.article=article;
+
+		if (article != null) {
+			this.article = article;
 			Title.setText(article.getTitle());
 			WebEngine webEngine = body.getEngine();
 			webEngine.loadContent(article.getAbstractText());
@@ -292,43 +230,99 @@ public class ArticleEditController {
 		}
 	}
 
+
+	@FXML
+	void initialize() {
+		image.setImage(new Image("file:resources/1.png"));
+		Type.setText("Type:Txt");
+		article = new Article();
+		HTMLEditor htmlEditor = new HTMLEditor();
+		htmlEditor.setHtmlText(article.getAbstractText());
+		article.setAbstractText("");
+		ArrayList<Categories> categories = new ArrayList<>();
+		categories.add(Categories.ECONOMY);
+		categories.add(Categories.INTERNATIONAL);
+		categories.add(Categories.SPORTS);
+		categories.add(Categories.NATIONAL);
+		categories.add(Categories.TECHNOLOGY);
+		category.setItems(FXCollections.observableList(categories));
+	}
+
 	@FXML
 	void onBack(ActionEvent event) {
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		stage.close();
 	}
 
-	/**
-	 * Save an article to a file in a json format
-	 * Article must have a title
-	 */
-	private void write() {
-		//TODO Consolidate all changes
-		this.editingArticle.commit();
-		//Removes special characters not allowed for filenames
-		String name = this.getArticle().getTitle().replaceAll("\\||/|\\\\|:|\\?","");
-		String fileName ="saveNews//"+name+".news";
-		JsonObject data = JsonArticle.articleToJson(this.getArticle());
-		  try (FileWriter file = new FileWriter(fileName)) {
-	            file.write(data.toString());
-	            file.flush();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	}
 	@FXML
-	void initialize() {
-	image.setImage(new Image("file:resources/1.png"));
-	Type.setText("Type:Txt");
-	article=new Article();
-	article.setBodyText("");
-	article.setAbstractText("");
-		ArrayList<Categories> strings=new ArrayList<>();
-		strings.add(Categories.ECONOMY);
-		strings.add(Categories.INTERNATIONAL);
-		strings.add(Categories.SPORTS);
-		strings.add(Categories.NATIONAL);
-		strings.add(Categories.TECHNOLOGY);
-	category.setItems(FXCollections.observableList(strings));
+	void Send_and_Back(Event event) {
+		editingArticle.commit();
+
+		try {
+			if (editingArticle.getTitle() == null || editingArticle.getTitle().equals("") || editingArticle.getCategory() == null || editingArticle.getCategory().equals("")) {
+				Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
+				alert.showAndWait();
+			} else {
+				if (send()) {
+					int i = connection.saveArticle(editingArticle.getArticleOriginal());
+					newsReaderController.updatePermissions();
+					Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+					stage.close();
+				}
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, "It's impossible to send the article! Title and category are mandatory.", ButtonType.OK);
+			alert.showAndWait();
+		}
+	}
+
+	@FXML
+	void Save_to_File() {
+		editingArticle.commit();
+
+		try {
+			if (editingArticle.getTitle() == null || editingArticle.getTitle().equals("")) {
+				Alert alert = new Alert(AlertType.ERROR, "It's impossible to save the article! Title is mandatory.", ButtonType.OK);
+				alert.showAndWait();
+			} else {
+				write();
+				Alert alert = new Alert(AlertType.CONFIRMATION, "Successfully saved the article in the \"saveNews\" folder inside the project.", ButtonType.OK);
+				alert.showAndWait();
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, "It's impossible to save the article! Title is mandatory.", ButtonType.OK);
+			alert.showAndWait();
+		}
+	}
+
+	@FXML
+	void html_or_text() {
+		if (editingArticle.isHtml()) {
+			body.getEngine().loadContent(editingArticle.getBodyText(), "text/plain");
+			Type.setText("Type:Html");
+		} else {
+			body.getEngine().loadContent(editingArticle.getBodyText(), "text/html");
+			Type.setText("Type:Txt");
+		}
+
+		editingArticle.toggleHtml();
+	}
+
+	@FXML
+	void Abstract_or_Body() {
+
+		System.out.println("Abstract Text: " + editingArticle.getAbstractText());
+		System.out.println("Body Text: " + editingArticle.getBodyText());
+
+		WebEngine webEngine = body.getEngine();
+		if (editingArticle.isAbstract()) {
+			webEngine.loadContent(editingArticle.bodyTextProperty().get());
+			Abstract_Body.setText("Body");
+		} else {
+			webEngine.loadContent(editingArticle.abstractTextProperty().get());
+			Abstract_Body.setText("Abstract");
+		}
+
+		editingArticle.toggleAbstract();
 	}
 }
